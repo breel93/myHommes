@@ -1,0 +1,27 @@
+#list_background{
+    background-image: url("/static/images/slider_1.jpg"); 
+    }
+
+#list_background1{
+    background-image: url("/static/images/slider_2.jpg"); 
+    }
+
+#list_background2{
+    background-image: url("/static/images/slider_3.jpg"); 
+    }
+
+#search_section{
+    height: 300px;
+}
+    
+#search_form{
+    margin-top: 100px;
+    margin-left: 180px;
+}
+    
+@media (max-width: 990px) {
+    #search_form{
+    margin: 100px;
+    margin-right:100px; 
+    }
+}

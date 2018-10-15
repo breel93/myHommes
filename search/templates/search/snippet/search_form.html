@@ -1,0 +1,38 @@
+
+<div class="slider-form">
+    <div class="container">
+       <h1 class="text-center text-white mb-5">Find Your Favorite Property</h1>
+       <form action="{% url 'search:search-query' %}"  method="GET">
+          <div class="row no-gutters">
+             <div class="col-md-4">
+                <div class="input-group">
+                   <div class="input-group-addon"><i class="mdi mdi-map-marker-multiple"></i></div>
+                   <input class="form-control" placeholder="Enter address, Neighborhoods" name="q"
+                   value="{{ request.GET.q }}" type="text">
+                </div>
+             </div>
+             <div class="col-md-3">
+                <div class="input-group">
+                   <div class="input-group-addon"><i class="mdi mdi-google-maps"></i></div>
+                   <select class="form-control select2 no-radius">
+                      <option value="">For Rent</option>
+                      <option value="AL">For Sale</option>
+                   </select>
+                </div>
+             </div>
+             <div class="col-md-3">
+                <div class="input-group">
+                   <div class="input-group-addon"><i class="mdi mdi-security-home"></i></div>
+                   <select class="form-control select2 no-radius">
+                      <option value="">Property Type</option>
+                      <option value="">House/Villa</option>
+                   </select>
+                </div>
+             </div>
+             <div class="col-md-2">  
+                <button type="submit" class="btn btn-success btn-block no-radius font-weight-bold">SEARCH</button>
+             </div>
+          </div>
+       </form>
+    </div>
+ </div>

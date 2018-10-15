@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>{% block title %}Real {% endblock %}</title>
+        {% load staticfiles %}
+
+
+       
+        {% include 'base/css.html' %}
+        
+        <!-- <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> -->
+
+
+        {% include 'base/js.html' %}
+
+        {% block style %}{% endblock %}
+         
+
+    </head>
+
+    <body>
+        
+       <!-- START: header -->
+  
+  <div class="probootstrap-loader"></div>
+
+  
+  <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+         <div class="container">
+            <a class="navbar-brand text-success logo" href="/"><i class="mdi mdi-home-map-marker"></i> <strong>Hommie</strong></a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+               <ul class="navbar-nav mr-auto mt-2 mt-lg-0 margin-auto">
+                  <!-- <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     HOME
+                     </a>
+                     <div class="dropdown-menu" aria-labelledby="navbarDropdownPortfolio">
+                        <a class="dropdown-item" href="index1.html">Home With Search</a>
+                        <a class="dropdown-item" href="index2.html">Home With Map</a>
+                        <a class="dropdown-item" href="index3.html">Home With Property Info</a>
+                     </div>
+                  </li> -->
+                  <li class="nav-item dropdown">
+                     <!-- <a class="nav-link dropdown-toggle" href="{% url 'property:list' %}" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Properties
+                     </a> -->
+                     <a class="nav-link" href="{% url 'property:list' %}">
+                        Properties
+                     </a>
+                     <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdownPortfolio">
+                        <a class="dropdown-item" href="properties-grid.html">Properties Grid</a>
+                        <a class="dropdown-item" href="properties-list.html">Properties List</a>
+                        <a class="dropdown-item" href="property-single-slider.html">Property Single Slider</a>
+                        <a class="dropdown-item" href="property-single-gallery.html">Property Single Gallery</a>
+                     </div> -->
+                  </li>
+                  <li>
+                     <a class="nav-link" href="{% url 'realtor:realtors' %}" >
+                     Realtor
+                     </a>
+         
+                  </li>
+
+                 <li class="nav-item dropdown">
+                     <a class="nav-link" href="{% url 'main:about' %}" >
+                     About Us
+                     </a>
+                  </li>
+
+                  <li>
+                     <a class="nav-link" href="{% url 'main:contact' %}">
+                     Contact
+                     </a>
+                  </li>
+
+                 {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Hi {{request.user.first_name }}
+                         </a>
+                         <div class="dropdown-menu" aria-labelledby="navbarDropdownPortfolio">
+                        
+                          <a class="dropdown-item" href="{% url 'main:profile' %}">User Profile</a>
+                          {% if request.user.realtor %}
+                            <a class="dropdown-item" href="{% url 'realtor:create' %}">Add Property</a>
+                            <a class="dropdown-item" href="{% url 'realtor:home' %}">My Properties</a>
+                          {% endif %}
+                          <a class="dropdown-item" href="favorite-properties.html">Favorite Properties</a>
+                          <a class="dropdown-item" href="{% url 'main:change_password' %}">Change Password</a>
+                          <a class="dropdown-item" href="{% url 'main:logout' %}">logout</a>
+                          
+                        
+                         </div>
+                    </li>
+                    
+                     
+
+                    
+                    
+                       
+                 {% else %}
+
+                   </ul>
+              
+
+                     <div class="my-2 my-lg-0">
+                         <ul class="list-inline main-nav-right">
+                             <li class="list-inline-item">
+                             <a class="btn btn-link btn-sm" href="{% url 'main:login' %}">Sign In</a>
+                             </li>
+                             <li class="list-inline-item">
+                             <a class="btn btn-success btn-sm" href="{% url 'main:register' %}">Sign Up</a>
+                             </li>
+                         </ul>
+                     </div>
+                 {% endif %}
+                    </ul>
+                 <div class="my-2 my-lg-0">
+                    <ul class="list-inline main-nav-right">
+                        {% if request.user.realtor %}
+                            <li class="list-inline-item">
+                                <a class="btn btn-link btn-sm" href="{% url 'realtor:create' %}">Create Property</a>
+                            </li>
+                        {% else %}
+                            <li class="list-inline-item">
+                                <a class="btn btn-link btn-sm" href="{% url 'realtor:home' %}">Become a Realtor</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+
+            </div>
+         </div>
+      </nav>
+   </header>
+   <!-- End Navbar -->
+
+  
+
+            <div>
+                {% block content %}
+                {% endblock %}
+            </div>
+
+            <!-- Footer -->
+      <section class="section-padding footer bg-white">
+          <div class="container">
+             <div class="row">
+                <div class="col-lg-4 col-md-3">
+                   <h4 class="mb-5"><a class="text-success logo" href="index-2.html"><i class="mdi mdi-home-map-marker"></i> <strong>Hommie</strong></a></h4>
+                   <p>House 1, 21 road<br>Efab estate, LifeCamp Abuja</p>
+                   <p class="mb-0"><a class="text-dark" href="#">+2348162269572</a></p>
+                   <p class="mb-0"><a class="text-success" href="#">kolajubril@gmail.com</a></p>
+                   <p class="mb-0"><a class="text-info" href="#">www.hommie.com</a></p>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                   <h6 class="mb-4">COMPANY</h6>
+                   <ul>
+                   <li><a href="#">About us</a></li>
+                   <li><a href="#">Career</a></li>
+                   <li><a href="#">Services</a></li>
+                   <li><a href="#">Properties</a></li>
+                   <li><a href="#">Contact</a></li>
+                   <ul>
+                </div>
+                <div class="col-lg-2 col-md-2">
+                   <h6 class="mb-4">LEARN MORE</h6>
+                   <ul>
+                   <li><a href="#">Privacy</a></li>
+                   <li><a href="#">Terms & Conditions</a></li>
+                   <li><a href="#">Account</a></li>
+                   <li><a href="#">FAQ</a></li>
+                   <li><a href="#">Blog</a></li>
+                   <ul>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                   <h6 class="mb-4">NEWSLETTER</h6>
+                   <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Email Address..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                         <button class="btn btn-outline-secondary" type="button"><i class="mdi mdi-arrow-right"></i></button>
+                      </div>
+                   </div>
+                   <h6 class="mb-4 mt-5">GET IN TOUCH</h6>
+                   <div class="footer-social">
+                      <a href="#"><i class="mdi mdi-facebook"></i></a>
+                      <a href="#"><i class="mdi mdi-twitter"></i></a>
+                      <a href="#"><i class="mdi mdi-instagram"></i></a>
+                      <a href="#"><i class="mdi mdi-google"></i></a>
+                   </div>
+                </div>
+             </div>
+          </div>
+       </section>
+       <!-- End Footer -->
+       <!-- Copyright -->
+       <section class="pt-4 pb-4 text-center">
+          <p class="mt-0 mb-0">© Copyright 2018 Hommie. All Rights Reserved</p>
+          <small class="mt-0 mb-0">
+          Made with <i class="mdi mdi-heart text-danger"></i>	by 
+          <a class="text-dark" target="_blank" href="https://askbootstrap.com/">Kola Emiola</a>
+          </small>
+          <br/>
+          <small class="mt-0 mb-0">
+            Bootstrap Themes by
+            <a class="text-dark" target="_blank" href="https://askbootstrap.com/">Ask Bootstrap</a>
+          </small>
+       </section>
+       <!-- End Copyright -->
+
+             
+            
+    
+    </body>
+</html>

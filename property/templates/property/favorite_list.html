@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+
+{% block style %}
+
+{% endblock style %}
+
+
+{% block content %}
+<h1>Library</h1>
+
+
+
+<table class='table'>
+<thead>
+	<th>Property</th>
+	<th>Image</th>
+	<th></th>
+</thead>
+
+
+
+
+
+
+{% for instance in property_list %}
+<tr>
+<td>
+<a href='{{ instance.get_absolute_url }}'>{{ instance.title }}</a>
+</td>
+
+<td>
+{% if instance.image %}
+	<a href='{{ instance.get_absolute_url }}'>
+
+		<img src='{{instance.main_image.url}}"' /></a>
+        <br/>
+	{% endif %}
+
+</td>
+
+
+  </tr>
+
+
+
+{% endfor %}
+
+
+</table>
+
+<li>No Favorite Property Yet.</li>
+
+
+{% endblock %}

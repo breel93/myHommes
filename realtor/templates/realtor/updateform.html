@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+             <!-- Inner Header -->
+        {% if request.user.realtor %}
+        {% if request.user.realtor.image %}
+                 <section class="section-padding bg-dark inner-header" style="background-image:  url('{{ request.user.realtor.image.url }}')" >
+             {% endif %}
+        {% else %}
+            
+            <section class="section-padding bg-dark inner-header" >
+        {% endif %}  
+        <!-- <section class="section-padding bg-dark inner-header"> -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                            <h1 class="mt-0 mb-3 text-white">Edit Realtor</h1>
+                            <div class="breadcrumbs">
+                                    <p class="mb-0 text-white"><a class="text-white" href="#">Home</a>  /  <span class="text-success">{{ request.user.first_name }}</span></p>
+                            </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End Inner Header -->
+        <section class="tab-view">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                        <ul class="nav justify-content-center">
+                         
+                        
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'main:profile' %}">User Profile</a>
+                                </li>
+                                {% if request.user.realtor %}
+                                    <li class="nav-item">
+                                        <a class="nav-link active text-success" href="{% url 'realtor:update' pk=request.user.realtor.id %}">Edit Realtor Information</a>
+                                    </li>
+                                
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'realtor:home' %}">My Properties</a>
+                                    </li>
+                                {% endif %}
+                                
+                                
+            
+                                <li class="nav-item">
+                                    <a class="nav-link" href="favorite-properties.html">Favorite Properties</a>
+                                </li>
+                                {% if request.user.realtor %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{% url 'realtor:create' %}">Add Property</a>
+                                    </li>
+                                {% endif %}
+                        
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+        </section>
+
+
+   
+
+        <section class="section-padding">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 mx-auto">
+                            <div class="card padding-card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Update Realtor</h5>
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {{ form|crispy }} 
+                                        <button type="submit" class="btn btn-success btn-block">Save</button>
+                                    </form>
+            
+                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
+
+{% endblock %}
+
+

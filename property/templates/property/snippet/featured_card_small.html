@@ -1,0 +1,22 @@
+<div class="card card-list">
+    <a href="{{ instance.get_absolute_url }}">
+            {% if instance.category.slug == "rent" %}
+                <span class="badge badge-success">For {{ instance.category }}</span>
+              {% elif instance.category.slug == "sale" %}
+                <span class="badge badge-info">For {{ instance.category }}</span>
+              {% else %}
+                <span class="badge badge-secondary">For {{ instance.category }}</span>
+              {% endif %}
+
+              {% if instance.main_image %}
+                <img class="card-img-top" src="{{instance.main_image.url}}" alt="Card image cap">
+              {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{instance.title}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i>{{instance.title}}</h6>
+                <h2 class="text-success mb-0 mt-3">
+                        ₦{{ instance.price }} {% if instance.duration %} <small>/{{ instance.duration }}</small>{% endif %}</h2>
+            </div>
+
+    </a>
+</div>

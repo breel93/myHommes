@@ -1,0 +1,20 @@
+{% load crispy_forms_tags %}
+<div class="container">
+        <div class="panel panel-default z-depth-4" id="loginPanel">
+               
+            <div class="panel-heading">Login<small id="gotoSignUp"><a href="{% url 'main:register' %}">Sign Up</a></small></div>
+            <div class="panel-body">
+                <form method="POST" action='{% url "main:login" %}'>
+                    {% csrf_token %}
+                    {% if next_url %}
+                    <input type='hidden' name='next' value='{{ next_url }}' />
+                    {% endif %}
+                    {{ form |crispy}}
+                    <button class="btn btn-success btn-lg btn-block z-depth-2 " type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+       
+    
+       
+    </div>

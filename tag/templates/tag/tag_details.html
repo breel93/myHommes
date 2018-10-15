@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<ul>
+    {% for instance in object.property.all %}
+        
+        <li> 
+           
+
+            {% if instance.main_image %}
+                <a href="{{ instance.get_absolute_url }}" >
+                <img src="{{instance.main_image.url}}" alt="{{ instance.title }} logo">
+                </a>
+            {% endif %}
+    
+        </li>
+    
+    
+    
+    
+    {% empty %}
+        <li>No Tags yet.</li>
+    {% endfor %}
+    </ul>
+
+
+{% endblock %}

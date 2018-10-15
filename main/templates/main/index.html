@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+
+
+<!-- Main Slider With Form -->
+<section class="osahan-slider">
+    <div id="osahanslider" class="carousel slide" data-ride="carousel">
+       <ol class="carousel-indicators">
+          <li data-target="#osahanslider" data-slide-to="0" class="active"></li>
+          <li data-target="#osahanslider" data-slide-to="1"></li>
+          <li data-target="#osahanslider" data-slide-to="2"></li>
+       </ol>
+       <div class="carousel-inner" role="listbox">
+          <div class="carousel-item active" style="background-image: url({% static 'images/2.jpg' %});"><div class="overlay"></div></div>
+          <div class="carousel-item" style="background-image: url({% static 'images/1.jpg' %});"><div class="overlay"></div></div>
+          <div class="carousel-item" style="background-image: url({% static 'images/3.jpg' %});" ><div class="overlay"></div></div>
+       </div>
+       <a class="carousel-control-prev" href="#osahanslider" role="button" data-slide="prev">
+       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+       <span class="sr-only">Previous</span>
+       </a>
+       <a class="carousel-control-next" href="#osahanslider" role="button" data-slide="next">
+       <span class="carousel-control-next-icon" aria-hidden="true"></span>
+       <span class="sr-only">Next</span>
+       </a>
+    </div>
+    {% include 'search/snippet/search_form.html' %}
+ </section>
+ <!-- End Main Slider With Form -->
+ <!-- Properties List -->
+ <section class="section-padding">
+    <div class="section-title text-center mb-5">
+       <h2>Latest Properties</h2>
+       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    </div>
+    <div class="container">
+       <div class="row">
+
+            {% if featured_property %}
+            
+                  {% for property in featured_property %}
+                  
+                        {% include 'property/snippet/property_card.html' with instance=property %}
+
+
+                  {% endfor %}
+            {% endif %}
+          
+          
+       </div>
+    </div>
+ </section>
+ <!-- End Properties List -->
+ <!-- Properties by City -->
+ <section class="section-padding bg-white">
+    <div class="section-title text-center mb-5">
+       <h2>Property By City</h2>
+       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    </div>
+    <div class="container">
+       <div class="row">
+          <div class="col-lg-8 col-md-8">
+             <div class="card bg-dark text-white card-overlay">
+                <a href="#">
+                   <img class="card-img" src="img/overlay/1.png" alt="Card image">
+                   <div class="card-img-overlay">
+                      <h3 class="card-title text-white">New York</h3>
+                      <p class="card-text text-white">16 Properties</p>
+                   </div>
+                </a>
+             </div>
+          </div>
+          <div class="col-lg-4 col-md-4">
+             <div class="card bg-dark text-white card-overlay">
+                <a href="#">
+                   <img class="card-img" src="img/overlay/2.png" alt="Card image">
+                   <div class="card-img-overlay">
+                      <h3 class="card-title text-white">Los Angeles</h3>
+                      <p class="card-text text-white">265 Properties</p>
+                   </div>
+                </a>
+             </div>
+          </div>
+       </div>
+       <div class="row">
+          <div class="col-lg-4 col-md-4">
+             <div class="card bg-dark text-white card-overlay">
+                <a href="#">
+                   <img class="card-img" src="img/overlay/3.png" alt="Card image">
+                   <div class="card-img-overlay">
+                      <h3 class="card-title text-white">Chicago</h3>
+                      <p class="card-text text-white">620 Properties</p>
+                   </div>
+                </a>
+                .    
+             </div>
+          </div>
+          <div class="col-lg-8 col-md-8">
+             <div class="card bg-dark text-white card-overlay">
+                <a href="#">
+                   <img class="card-img" src="img/overlay/4.png" alt="Card image">
+                   <div class="card-img-overlay">
+                      <h3 class="card-title text-white">Philadelphia</h3>
+                      <p class="card-text text-white">28 Properties</p>
+                   </div>
+                </a>
+             </div>
+          </div>
+       </div>
+    </div>
+ </section>
+
+ <!-- End Blog -->
+ <!-- Join Team -->
+ <section class="section-padding bg-dark text-center">
+    <h2 class="text-white mt-0">Join our professional team & agents<br>to start selling your house</h2>
+    <p class="text-white mb-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    <button type="button" class="btn btn-success">Contact Us</button> <button type="button" class="btn btn-outline-success">Read More</button>
+ </section>
+ <!-- End Join Team -->
+
+{% endblock %}

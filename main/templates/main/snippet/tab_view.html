@@ -1,0 +1,40 @@
+	  
+	  
+<section class="tab-view">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+			<ul class="nav justify-content-center">
+			 
+			
+				<li class="nav-item">
+					<a class="nav-link text-success" href="{% url 'main:profile' %}">User Profile</a>
+				</li>
+					{% if request.user.realtor %}
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'realtor:update' pk=request.user.realtor.id %}">Edit Realtor Information</a>
+					</li>
+					{% endif %}
+
+					{% if request.user.realtor %}
+						<li class="nav-item">
+							<a class="nav-link" href="my-properties.html">My Properties</a>
+						</li>
+					{% endif %}
+					
+					
+
+					<li class="nav-item">
+						<a class="nav-link" href="favorite-properties.html">Favorite Properties</a>
+					</li>
+					{% if request.user.realtor %}
+						<li class="nav-item">
+							<a class="nav-link" href="add-property.html">Add Property</a>
+						</li>
+					{% endif %}
+			
+			</ul>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,19 @@
+<!-- <div class="row">
+    
+    <div class="col-sm-6 col-md-4"> -->
+        <div class="thumbnail">
+            {% if instance.main_image %}
+            <a href="{{ instance.get_absolute_url }}" >
+             <img src="{{instance.main_image.url}}" alt="{{ instance.title }} logo">
+            </a>
+            {% endif %}
+            <div class="caption">
+              <h3>{{instance.title}}</h3>
+              <p>{{ instance.description| truncatewords:10}}</p>
+              <p><a href="{{ instance.get_absolute_url }}" class="btn btn-primary" role="button">View</a> 
+            
+                
+            </div>
+          </div>
+        <!-- </div>
+    </div> -->

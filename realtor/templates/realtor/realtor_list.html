@@ -1,0 +1,50 @@
+
+
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+             <!-- Inner Header -->
+             
+    <section class="section-padding bg-dark inner-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="mt-0 mb-3 text-white">Realtors</h1>
+                    <div class="breadcrumbs">
+                        <p class="mb-0 text-white"><a class="text-white" href="/">Home</a>  /  <span class="text-success">Realtors</span></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if object_list %}
+     <!-- Trusted Agents -->
+     <section class="section-padding">
+        <div class="section-title text-center mb-5">
+           <h2>Trusted Agents</h2>
+           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+        <div class="container">
+           <div class="row">
+               {% for realtor in object_list %}
+                    {% include 'realtor/snippet/realtor_card.html' with instance=realtor %}
+               {% endfor%}
+              
+           </div>
+        </div>
+     </section>
+     <!-- End Trusted Agents -->
+    {% else %}
+    <section class="section-padding">
+            <div class="section-title text-center mb-5">
+               <h2>No agent here </h2>
+               
+            </div>
+         </section>
+    {% endif %}
+{% endblock %}

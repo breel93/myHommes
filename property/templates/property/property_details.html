@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+
+ {% load staticfiles %}
+ {% load crispy_forms_tags %}
+
+    {% block style %}
+        <link href='{% static "css/property_details.css" %}' rel="stylesheet">
+    {% endblock %}
+
+ {% block content %}   
+
+
+    <!-- Property Single Slider header -->
+    <section class="osahan-slider">
+        <div id="osahanslider" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#osahanslider" data-slide-to="0" class="active"></li>
+                <li data-target="#osahanslider" data-slide-to="1"></li>
+            </ol>
+    
+            <div class="carousel-inner" role="listbox">
+                <div class="carousel-item active" style="background-image: url('{{ object.main_image.url }}')"id = "list_background"></div>
+                {% if object.main_image_two %}
+                    <div class="carousel-item" style="background-image: url('{{ object.main_image_two.url }}')"></div>
+                {% endif %}
+            </div>
+            <a class="carousel-control-prev" href="#osahanslider" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#osahanslider" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <div class="property-single-title property-single-title-gallery">
+            <div class="container">
+    
+                <div class="row">
+                    <div class="col-lg-8 col-md-8">
+                        <h1>{{ object.title }}</h1>
+                        <h6><i class="mdi mdi-home-map-marker"></i> >{{ object.address }}</h6>
+                    </div>
+                    <div class="col-lg-4 col-md-4 text-right">
+                        <h6 class="mt-2">For {{ object.category }}</h6>
+                        <h2 class="text-success">₦{{ object.price }} {% if object.duration %} <small>/{{ object.duration }}</small>{% endif %}</h2>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-lg-8 col-md-8">
+                        <p class="mt-1 mb-0"><strong>Property ID</strong> : 533566 &nbsp;&nbsp; <strong>Add to favorites</strong>
+                            <i class="mdi mdi-heart"></i></p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 text-right">
+    
+                        <div class="footer-social">
+                            <span>Share :</span> &nbsp;
+                            <a href="#"><i class="mdi mdi-facebook"></i></a>
+                            <a href="#"><i class="mdi mdi-twitter"></i></a>
+                            <a href="#"><i class="mdi mdi-instagram"></i></a>
+                            <a href="#"><i class="mdi mdi-google"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Property Single Slider header -->
+    
+    
+    <!-- Property Single Slider -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-8">
+
+                    
+                    {% if object.images %}
+                        <div class="card">
+                            
+                                <div class="card-body osahan-slider pl-0 pr-0 pt-0 pb-0">
+                                    <div id="osahansliderz" class="carousel slide" data-ride="carousel">
+                                       
+                                        <ol class="carousel-indicators"> 
+                                            <li data-target="#osahansliderz" data-slide-to="0" class="active"></li>
+                                            <li data-target="#osahansliderz" data-slide-to="1"></li>
+                                            <li data-target="#osahansliderz" data-slide-to="2"></li>
+                                        </ol>
+
+                                        <ol class="carousel-indicators"> 
+                                            {% for propimages in object.images.all %} 
+                                                <li data-target="#osahansliderz" data-slide-to="{{ propimages.count }}" class="{% if forloop.counter == 1 %}active{% endif %}"></li>
+                                                <!-- <li data-target="#osahansliderz" data-slide-to="1"></li>
+                                                <li data-target="#osahansliderz" data-slide-to="2"></li> -->
+                                            {% endfor %}
+
+                                        </ol>
+                                            
+                                        <div class="carousel-inner" role="listbox">
+                                        {% for propimages in object.images.all %} 
+                                            <div class="{% if forloop.counter == 1 %}carousel-item active rounded{% else %} carousel-item rounded{% endif %}" style="background-image:url('{{ propimages.image.url }}' )"></div>  
+                                        {% endfor %}    
+                                                
+                                        </div>
+
+                                        
+                                        <a class="carousel-control-prev" href="#osahansliderz" role="button" data-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                        <a class="carousel-control-next" href="#osahansliderz" role="button" data-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    {% endif %}
+    
+    
+    
+                    <div class="card padding-card">
+    
+                        <div class="card-body">
+                            <h5 class="card-title mb-3">Description</h5>
+    
+                            <div class="row">
+                                
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="list-icon">
+                                        <i class="mdi mdi-sofa"></i>
+                                        <strong>Beds:</strong>
+                                        <p class="mb-0">{{ object.bedroom }} Bedrooms</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4">
+                                    <div class="list-icon">
+                                        <i class="mdi mdi-hot-tub"></i>
+                                        <strong>Baths:</strong>
+                                        <p class="mb-0">{{ object.bathroom }} Bathrooms</p>
+                                    </div>
+                                </div>
+                                
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="list-icon">
+                                            <i class="mdi mdi-move-resize-variant"></i>
+                                            <strong>Area:</strong>
+                                            {% if object.square_meter %}
+                                                <p class="mb-0">{{ object.square_meter }} aq ft</p>
+                                            {% else %}
+                                                <p class="mb-0">Not Specified</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                               
+                            </div>
+                            <div class="row">
+                
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="list-icon">
+                                            <i class="mdi mdi-sofa"></i>
+                                            <strong>Furnished:</strong>
+                                            {% if object.furnished %}
+                                                <p class="mb-0">{{ object.furnished }}</p>
+                                            {% else %}
+                                            <p class="mb-0">no</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                
+                                {% if object.storey %}
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="list-icon">
+                                            <i class="mdi mdi-floor-plan"></i>
+                                            <strong>Floors:</strong>
+                                            <p class="mb-0">{{ object.storey }}</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                {% if object.parking_space %}
+                                    <div class="col-lg-4 col-md-4">
+                                        <div class="list-icon">
+                                            <i class="mdi mdi-car-convertible"></i>
+    
+                                            <strong>Parking:</strong>
+                                            {% if object.parking_space %}
+                                                <p class="mb-0">{{ object.parking_space }}</p>
+                                            {% else %}
+                                                <p class="mb-0">no</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+    
+    
+                            <p>{{ object.description }}</p>
+                           
+    
+                        </div>
+                    </div>
+    
+    
+                </div>
+                <div class="col-lg-4 col-md-4">
+    
+    
+    
+                    <div class="card sidebar-card">
+    
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">About Agent</h5>
+    
+    
+                            <div id="featured-properties">
+    
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="card card-list">
+                                            <a href="#">
+                                                {% if object.realtor.image %}
+                                                    <img class="card-img-top" src="{{ object.realtor.image.url }}" alt="Card image cap">
+                                                {% endif %}
+                                                <div class="card-body pb-0">
+                                                    <h5 class="card-title mb-4">{{ object.realtor.user.first_name }} {{ object.realtor.user.last_name }}</h5>
+                                                    <h6 class="card-subtitle mb-3 text-muted"><i class="mdi mdi-phone"></i>
+                                                        (950) 491-570-180</h6>
+                                                    <h6 class="card-subtitle mb-3 text-muted"><i class="mdi mdi-email"></i>
+                                                        {{ object.realtor.user.email }}</h6>
+                                                    <h6 class="card-subtitle text-muted"><i class="mdi mdi-link"></i>
+                                                        www.askbootstrap.com</h6>
+                                                </div>
+    
+                                            </a>
+                                        </div>
+                                    </div>
+    
+                                </div>
+                            </div>
+    
+    
+                        </div>
+                    </div>
+    
+                    <div class="card sidebar-card">
+    
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">Featured Properties</h5>
+    
+                            <div id="featured-properties" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    <li data-target="#featured-properties" data-slide-to="0" class="active"></li>
+                                    <li data-target="#featured-properties" data-slide-to="1"></li>
+                                </ol>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <div class="card card-list">
+                                            <a href="#">
+                                                <span class="badge badge-success">For Sale</span>
+                                                <img class="card-img-top" src="img/list/1.png" alt="Card image cap">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">House in Kent Street</h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i>
+                                                        127 Kent Sreet, Sydny, NEW 2000</h6>
+                                                    <h2 class="text-success mb-0 mt-3">
+                                                        $130,000 <small>/month</small></h2>
+                                                </div>
+    
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <div class="card card-list">
+                                            <a href="#">
+                                                <span class="badge badge-secondary">For Rent</span>
+                                                <img class="card-img-top" src="img/list/2.png" alt="Card image cap">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">Family House in Hudson</h5>
+                                                    <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i>
+                                                        Hoboken, NJ, USA</h6>
+                                                    <h2 class="text-success mb-0 mt-3">
+                                                        $127,000 <small>/month</small></h2>
+                                                </div>
+    
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+    
+    
+    
+    
+    
+    
+    
+                    
+    
+    
+    
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Property Single Slider -->
+         
+         
+         <!-- Similar Properties -->
+         <section class="section-padding  border-top">
+            <div class="container">
+               <div class="row">
+                   <div class="col-lg-12 col-md-12 section-title text-left mb-4">
+                   <h2>Similar Properties</h2>
+                   </div>
+                  <div class="col-lg-4 col-md-4">
+                     <div class="card card-list">
+                        <a href="#">
+                           <span class="badge badge-success">For Sale</span>
+                           <img class="card-img-top" src="img/list/1.png" alt="Card image cap">
+                           <div class="card-body">
+                              <h5 class="card-title">House in Kent Street</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> 127 Kent Sreet, Sydny, NEW 2000</h6>
+                              <h2 class="text-success mb-0 mt-3">
+                              $130,000 <small>/month</small></h2>
+                           </div>
+                           <div class="card-footer">
+                              <span><i class="mdi mdi-sofa"></i> Beds : <strong>3</strong></span>
+                              <span><i class="mdi mdi-scale-bathroom"></i> Baths : <strong>2</strong></span>
+                              <span><i class="mdi mdi-move-resize-variant"></i> Area : <strong>587 sq ft</strong></span>
+                           </div>
+                        </a>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4">
+                     <div class="card card-list">
+                        <a href="#">
+                           <span class="badge badge-secondary">For Rent</span>
+                           <img class="card-img-top" src="img/list/2.png" alt="Card image cap">
+                           <div class="card-body">
+                              <h5 class="card-title">Family House in Hudson</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> Hoboken, NJ, USA</h6>
+                              <h2 class="text-success mb-0 mt-3">
+                              $127,000 <small>/month</small></h2>
+                           </div>
+                           <div class="card-footer">
+                              <span><i class="mdi mdi-sofa"></i> Beds : <strong>5</strong></span>
+                              <span><i class="mdi mdi-scale-bathroom"></i> Baths : <strong>3</strong></span>
+                              <span><i class="mdi mdi-move-resize-variant"></i> Area : <strong>300 sq ft</strong></span>
+                           </div>
+                        </a>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-md-4">
+                     <div class="card card-list">
+                        <a href="#">
+                           <span class="badge badge-success">For Sale</span>
+                           <img class="card-img-top" src="img/list/3.png" alt="Card image cap">
+                           <div class="card-body">
+                              <h5 class="card-title">Loft Above The City</h5>
+                              <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> Hope Street (Stop P), London SW11, UK</h6>
+                              <h2 class="text-success mb-0 mt-3">
+                              $55,000 <small>/month</small></h2>
+                           </div>
+                           <div class="card-footer">
+                              <span><i class="mdi mdi-sofa"></i> Beds : <strong>2</strong></span>
+                              <span><i class="mdi mdi-scale-bathroom"></i> Baths : <strong>1</strong></span>
+                              <span><i class="mdi mdi-move-resize-variant"></i> Area : <strong>100 sq ft</strong></span>
+                           </div>
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </section>
+         <!-- End Similar Properties -->
+
+
+
+   
+    
+    <div class='clearfix'></div>
+        
+   
+    {% endblock %}

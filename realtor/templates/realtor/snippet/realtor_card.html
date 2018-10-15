@@ -1,0 +1,15 @@
+<div class="col-lg-4 col-md-4">
+    <div class="card padding-card">
+        <a href="{{ instance.get_realtor_url }}">
+            <div class="card-body agents-card text-center">
+                {% if instance.image %}
+                    <img class="img-fluid mb-4" src="{{ instance.image.url }}" alt="">
+                {% endif %}   
+                    <p class="mb-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.</p>
+                    <h6 class="mb-0 text-success">- {{ instance.user.first_name }}  {{ instance.user.last_name }}</h6>
+                <small>{{ instance.company_name }}</small>
+            </div>
+        </a>     
+    </div>
+  
+</div>

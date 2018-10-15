@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+             <!-- Inner Header -->
+          
+    <section class="section-padding bg-dark inner-header" style="background-image: url('{{ object.image.url }}')"> 
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="mt-0 mb-3 text-white">Realtor Profile</h1>
+                    <div class="breadcrumbs">
+                        {% if object %}
+                           <p class="mb-0 text-white"><a class="text-white" href="/">Home</a>  /  <span class="text-success">{{ object.user.first_name }}</span></p>
+                        {% else %}
+                            <p class="mb-0 text-white"><a class="text-white" href="/">Home</a>  /  <span class="text-success">Realtor Profile</span></p>
+                        {% endif %}
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if object %}
+    <!-- Trusted Agents -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-5">
+                    {% if object.image %}
+                        <img class="rounded img-fluid" src="{{ object.image.url }}" alt="Card image cap">
+                    {% endif %}
+                    </div>
+                <div class="col-lg-7 col-md-7 pl-5 pr-5">
+                    <h1 class="mb-0 mt-4">{{ object.user.first_name }} {{ object.user.last_name }}</h1>
+                    <h5 class="text-success mb-3">{{ object.company_name }}</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque lobortis tincidunt est, et euismod
+                        purus suscipit quis. Etiam euismod ornare elementum.lobortis tincidunt est, et euismod purus
+                        suscipit quis. Etiam euismod ornare elementum. </p>
+                    <div class="row mt-3">
+                        <div class="col-lg-6 col-md-6">
+                            <p><strong class="text-dark">Phone :</strong> {{ object.phone_number }}</p>
+                            <p><strong class="text-dark">Address :</strong> {{ object.address }}</p>
+                            <p><strong class="text-dark">State :</strong> {{ object.state }}</p>
+                        </div>
+                        <div class="col-lg-6 col-md-6">
+                            {% if object.website %}
+                                <p><strong class="text-dark">Website :</strong> {{ object.website }}</p>
+                            {% endif %}
+                            <p><strong class="text-dark">City :</strong> {{ object.city }}</p>
+                    
+                        </div>
+    
+                    </div>
+                    <!-- <div class="footer-social"><span>Follow : </span>
+                        <a href="#"><i class="mdi mdi-facebook"></i></a>
+                        <a href="#"><i class="mdi mdi-twitter"></i></a>
+                        <a href="#"><i class="mdi mdi-instagram"></i></a>
+                        <a href="#"><i class="mdi mdi-google"></i></a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Trusted Agents -->
+
+
+    
+    {% endif %}
+{% endblock %}

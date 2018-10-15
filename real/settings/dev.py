@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 
     'crispy_forms',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -151,6 +152,10 @@ STATIC_ROOT =  os.path.join(os.path.dirname(BASE_DIR), "static_cdn","static_root
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
 
+
+
+
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # LOGOUT_REDIRECT_URL = '/'
@@ -169,3 +174,5 @@ CSRF_COOKIE_SECURE              = False
 SECURE_HSTS_SECONDS             = None
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
 SECURE_FRAME_DENY               = False
+
+

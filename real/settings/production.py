@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
 
     'crispy_forms',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -149,6 +150,8 @@ STATIC_ROOT =  os.path.join(os.path.dirname(BASE_DIR), "static_cdn","static_root
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn", "media_root")
 
+from real.aws.conf import *
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # LOGOUT_REDIRECT_URL = '/'
@@ -168,4 +171,7 @@ CSRF_COOKIE_SECURE              = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
 SECURE_HSTS_SECONDS             = 1000000
 SECURE_FRAME_DENY               = True
+
+
+
 

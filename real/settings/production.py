@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ro@2i^6v+6xm_@9)#^9dt*k%!!7bm%$o^9xvk$i&p+%1jj8_1q'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -44,8 +44,7 @@ INSTALLED_APPS = [
     'analytics',
     'realtor',
 
-
-
+    #third party..
     'crispy_forms',
     'storages',
 ]

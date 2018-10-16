@@ -3,15 +3,10 @@ import os
 
 
 
-# AWS_GROUP_NAME = os.environ.get("AWS_GROUP_NAME")
-# AWS_USERNAME = os.environ.get("AWS_USERNAME")
-# AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-# AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-
-AWS_GROUP_NAME = "real_realestate_group"
-AWS_USERNAME = "real"
-AWS_ACCESS_KEY_ID = "AKIAIXK7XSU47NZHNHHA"
-AWS_SECRET_ACCESS_KEY = "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"
+AWS_GROUP_NAME = os.environ.get("AWS_GROUP_NAME")
+AWS_USERNAME = os.environ.get("AWS_USERNAME")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
 
 AWS_S3_SIGNATURE_VERSION = 's3v4'

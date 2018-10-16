@@ -30,35 +30,15 @@ def upload_image_path(instance, filename):
         final_filename=final_filename
     )
 
-class Category(models.Model):
-    title        = models.CharField(max_length=120, blank=True, unique=True)
-    slug         = models.SlugField(blank=True,unique=True)
 
-    def get_category_url(self):
-        return reverse("property:category-detail", kwargs={"slug": self.slug})
-
-    def __str__(self):
-        return self.slug
-    
-    
-    def get_property(self):
-        return property.objects.filter(category__title = self.title)
-
-    class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
-
-
-def category_pre_save_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = unique_slug_generator(instance)
-
-pre_save.connect(category_pre_save_receiver, sender=Category)
 
 
 class City(models.Model):
     title        = models.CharField(max_length=120, blank=True, unique=True)
+    image        = models.ImageField(upload_to='properties/', null=True, blank=True)
     slug         = models.SlugField(blank=True,unique=True)
+    
+    
 
 
     def get_city_url(self):
@@ -96,8 +76,10 @@ class CityImage(models.Model):
 # neighborhood
 class Neighborhood(models.Model):
     title        = models.CharField(max_length=120, blank=True, unique=True)
+    image        = models.ImageField(upload_to='properties/', null=True, blank=True)
     slug         = models.SlugField(blank=True,unique=True)
     city         = models.ForeignKey(City,blank=True, default=1, max_length=300, unique=False)
+    
 
     def get_neighborhood_url(self):
         return reverse("property:neighborhood", kwargs={"slug": self.city,"neighborhood_slug": self.slug})
@@ -126,6 +108,31 @@ class NeighborhoodImage(models.Model):
 
     def __str__(self):
         return self.neighborhood
+
+class Category(models.Model):
+    title        = models.CharField(max_length=120, blank=True, unique=True)
+    slug         = models.SlugField(blank=True,unique=True)
+
+    def get_category_url(self):
+        return reverse("property:category-detail", kwargs={"slug": self.slug})
+
+    def __str__(self):
+        return self.slug
+    
+    
+    def get_property(self):
+        return property.objects.filter(category__title = self.title)
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
+
+def category_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(category_pre_save_receiver, sender=Category)
 
 
 

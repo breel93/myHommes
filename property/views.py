@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect, reverse
 import random
 from .models import Property, PropertyRating, MyProperty, Neighborhood, City, Category
 from .mixins import PropertyManagerMixin
+from django.db.models import Count
 from tag.models import Tag
 from analytics.models import TagView
 from django.views.generic import View
@@ -210,11 +211,13 @@ class PropertyCategoryListView(ListView):
     queryset      = Category.objects.all()[:6]
 
 
-def get_city(request, slug):
+def get_city(request, slug, **kwargs):
     city_property = Property.objects.filter(city__slug=slug)
-    neigborhood_name = Neighborhood.objects.filter(city__slug=slug)
+    neigborhood_name = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
     property_type  = Category.objects.all()
-    # queryset   = Category.objects.filter(slug = category_name)
+    # property_type  = Category.objects.filter(property__city=slug).annotate(num_property = Count("property")).order_by("-num_property")
+    
+   
     featured = Property.objects.filter(featured = True,city__slug=slug)[:3]
     context = { 'city_property' : city_property,
                 'neigborhood_name':neigborhood_name,
@@ -226,9 +229,9 @@ def get_city(request, slug):
 
 def get_neighborhood(request, slug, neighborhood_slug):
     neighborhood_property = Property.objects.filter(city__slug=slug, neighborhood__slug = neighborhood_slug)
-    neigborhood_name = Neighborhood.objects.filter(city__slug=slug)
+    neigborhood_name = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
     featured = Property.objects.filter(featured = True,city__slug=slug, neighborhood__slug = neighborhood_slug)[:3]
-    property_type  = Category.objects.all()
+    property_type  = Category.objects.filter()
     context = {  
         'neighborhood_property' : neighborhood_property , 
         'neigborhood_name' : neigborhood_name,

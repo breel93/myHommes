@@ -59,10 +59,10 @@
             
                         <ul class="sidebar-card-list">
                             {% if property_type %}
-                            {% for type in property_type %}
-                                <li><a href="#"><i class="mdi mdi-chevron-right"></i> For {{ type.title }} <span class="sidebar-badge">600</span></a></li>
-                                <!-- <li><a href="#"><i class="mdi mdi-chevron-right"></i> For Sale <span class="sidebar-badge">1200</span></a></li> -->
-                            {% endfor %}
+                                {% for type in property_type %}
+                                    <li><a href="#"><i class="mdi mdi-chevron-right"></i> For {{ type.title }} <span class="sidebar-badge">600</span></a></li>
+                                    <!-- <li><a href="#"><i class="mdi mdi-chevron-right"></i> For Sale <span class="sidebar-badge">1200</span></a></li> -->
+                                {% endfor %}
                             {% endif %}
                         </ul>
             
@@ -80,7 +80,7 @@
                         <ul class="sidebar-card-list">
                             {% if neigborhood_name %}
                                 {% for neigborhood in neigborhood_name %}
-                                    <li><a href="{{ neigborhood.get_neighborhood_url }}"><i class="mdi mdi-chevron-right"></i> {{neigborhood.title }}<span class="sidebar-badge">{{ city.property|length }}</span></a></li>
+                                    <li><a href="{{ neigborhood.get_neighborhood_url }}"><i class="mdi mdi-chevron-right"></i> {{neigborhood.title }}<span class="sidebar-badge">{{ neigborhood.num_property }}</span></a></li>
                         
                                 {% endfor %}   
                             {% endif %}

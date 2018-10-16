@@ -4,7 +4,9 @@ from django.views.generic import TemplateView, CreateView, FormView
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import messages
+from django.db.models import Count
 from .models import User
+
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash, authenticate, login
 from .forms import RegistrationForm, UpdateCustomerForm, UpdateCustomerFormTwo, LoginForm
@@ -17,7 +19,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from property.models import Property
+from property.models import Property, City
 
 
 # Create your views here.
@@ -169,11 +171,15 @@ class MainView(View):
                 property = sorted(property, key=lambda x: random.random())
 
         featured_property = Property.objects.filter(featured = True)[:12]
+        # city          = City.objects.filter(slug__in = ["abuja" , "lagos" , "ibadan" , "calabar" , "kano","port-harcourt"]).order_by("id")
+        city          = City.objects.filter(slug__in = ["abuja" , "lagos" , "ibadan" , "calabar" , "kano","port-harcourt"]).annotate(num_property = Count("property")).order_by("-num_property")
+
 
         context = {
             "property": property,
             "top_tags": top_tags,
             "featured_property":featured_property,
+            "city":city
         }
         return render(request, "main/index.html", context)
 

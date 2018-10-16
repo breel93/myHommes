@@ -33,7 +33,7 @@
  <section class="section-padding">
     <div class="section-title text-center mb-5">
        <h2>Latest Properties</h2>
-       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+       <p>.</p>
     </div>
     <div class="container">
        <div class="row">
@@ -57,58 +57,22 @@
  <section class="section-padding bg-white">
     <div class="section-title text-center mb-5">
        <h2>Property By City</h2>
-       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+       <p>We bring you the best properties in your favorite city.</p>
     </div>
     <div class="container">
-       <div class="row">
-          <div class="col-lg-8 col-md-8">
-             <div class="card bg-dark text-white card-overlay">
-                <a href="#">
-                   <img class="card-img" src="img/overlay/1.png" alt="Card image">
-                   <div class="card-img-overlay">
-                      <h3 class="card-title text-white">New York</h3>
-                      <p class="card-text text-white">16 Properties</p>
-                   </div>
-                </a>
-             </div>
-          </div>
-          <div class="col-lg-4 col-md-4">
-             <div class="card bg-dark text-white card-overlay">
-                <a href="#">
-                   <img class="card-img" src="img/overlay/2.png" alt="Card image">
-                   <div class="card-img-overlay">
-                      <h3 class="card-title text-white">Los Angeles</h3>
-                      <p class="card-text text-white">265 Properties</p>
-                   </div>
-                </a>
-             </div>
-          </div>
-       </div>
-       <div class="row">
-          <div class="col-lg-4 col-md-4">
-             <div class="card bg-dark text-white card-overlay">
-                <a href="#">
-                   <img class="card-img" src="img/overlay/3.png" alt="Card image">
-                   <div class="card-img-overlay">
-                      <h3 class="card-title text-white">Chicago</h3>
-                      <p class="card-text text-white">620 Properties</p>
-                   </div>
-                </a>
-                .    
-             </div>
-          </div>
-          <div class="col-lg-8 col-md-8">
-             <div class="card bg-dark text-white card-overlay">
-                <a href="#">
-                   <img class="card-img" src="img/overlay/4.png" alt="Card image">
-                   <div class="card-img-overlay">
-                      <h3 class="card-title text-white">Philadelphia</h3>
-                      <p class="card-text text-white">28 Properties</p>
-                   </div>
-                </a>
-             </div>
-          </div>
-       </div>
+            <div class="row">
+                  {% if city %}
+            
+                        {% for c in city %}
+                        
+                              {% include 'main/snippet/city_card.html' with instance=c %}
+      
+      
+                        {% endfor %}
+                  {% endif %}
+            
+            </div>
+    
     </div>
  </section>
 

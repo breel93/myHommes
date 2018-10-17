@@ -1,4 +1,5 @@
 from django.db.models import Q
+
 import random
 from django.conf import settings
 import os
@@ -12,6 +13,10 @@ from django.utils.translation import ugettext_lazy as _
 from real.utils import unique_slug_generator
 from main.models import User
 from realtor.models import Realtor
+
+
+
+
 
 
 def get_filename_ext(filepath):
@@ -84,8 +89,14 @@ class Neighborhood(models.Model):
     def get_neighborhood_url(self):
         return reverse("property:neighborhood", kwargs={"slug": self.city,"neighborhood_slug": self.slug})
 
+    # def class_name(self):
+    #     return self.__class__.__name__
+
     def __str__(self):
         return self.slug
+    
+    
+   
     
     
     def get_property(self):

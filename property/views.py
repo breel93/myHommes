@@ -195,7 +195,7 @@ class PropertyListView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         property = Property.objects.all()[:50]
         property_type  = Category.objects.all()
-        city = City.objects.all()[:10]
+        city = City.objects.all().annotate(num_property = Count("property")).order_by("-num_property")
         featured = Property.objects.filter(featured = True)[:3]
 
         context = { 'property_type':property_type,
@@ -215,6 +215,7 @@ def get_city(request, slug, **kwargs):
     city_property = Property.objects.filter(city__slug=slug)
     neigborhood_name = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
     property_type  = Category.objects.all()
+    city_name = City.objects.filter(slug=slug)[:1]
     # property_type  = Category.objects.filter(property__city=slug).annotate(num_property = Count("property")).order_by("-num_property")
     
    
@@ -222,21 +223,26 @@ def get_city(request, slug, **kwargs):
     context = { 'city_property' : city_property,
                 'neigborhood_name':neigborhood_name,
                 'property_type':property_type,
-                'featured': featured 
+                'featured': featured ,
+                'city_name':city_name
                  }
     return render(request,'property/property_city_detailview.html', context)
 
 
 def get_neighborhood(request, slug, neighborhood_slug):
     neighborhood_property = Property.objects.filter(city__slug=slug, neighborhood__slug = neighborhood_slug)
-    neigborhood_name = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
+    city_neigborhoods = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
     featured = Property.objects.filter(featured = True,city__slug=slug, neighborhood__slug = neighborhood_slug)[:3]
     property_type  = Category.objects.filter()
+    neigborhood_name = Neighborhood.objects.filter(city__slug=slug, slug=neighborhood_slug)[:1]
+    city =  city_name = City.objects.filter(slug=slug)[:1]
     context = {  
         'neighborhood_property' : neighborhood_property , 
-        'neigborhood_name' : neigborhood_name,
+        'city_neigborhoods' : city_neigborhoods,
         'property_type':property_type,
-         'featured':featured
+        'featured':featured,
+        'neigborhood_name':neigborhood_name,
+        'city': city
          }
     return render(request, 'property/property_neighborhood_detail.html',context)
 

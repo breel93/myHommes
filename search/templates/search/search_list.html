@@ -11,26 +11,13 @@
     <!-- Main Slider With Form -->
     <section class="osahan-slider">
             <div id="osahanslider" class="carousel slide" data-ride="carousel">
-                <ol class="carousel-indicators">
-                    <li data-target="#osahanslider" data-slide-to="0" class="active"></li>
-                    <li data-target="#osahanslider" data-slide-to="1"></li>
-                </ol>
+               
                 <div class="carousel-inner" role="listbox">
-                    <div class="carousel-item active" style="background-image: url('img/slider/1.jpg')">
-                        <div class="overlay"></div>
-                    </div>
-                    <div class="carousel-item" style="background-image: url('img/slider/2.jpg')">
+                    <div class="carousel-item active" style="background-image: url('{% static 'images/city_view.jpg' %}')">
                         <div class="overlay"></div>
                     </div>
                 </div>
-                <a class="carousel-control-prev" href="#osahanslider" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#osahanslider" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+            
             </div>
             
             {% include 'search/snippet/search_form.html' %}
@@ -72,8 +59,12 @@
                       <h5 class="card-title mb-3">Property Type</h5>
         
                       <ul class="sidebar-card-list">
-                        <li><a href="#"><i class="mdi mdi-chevron-right"></i> For Rent <span class="sidebar-badge">600</span></a></li>
-                        <li><a href="#"><i class="mdi mdi-chevron-right"></i> For Sale <span class="sidebar-badge">1200</span></a></li>
+                        {% if property_type %}
+                          {% for type in property_type %}
+                            <li><a href="#"><i class="mdi mdi-chevron-right"></i> For {{ type.title }} <span class="sidebar-badge"></span></a></li>
+                            <!-- <li><a href="#"><i class="mdi mdi-chevron-right"></i> For Sale <span class="sidebar-badge">1200</span></a></li> -->
+                          {% endfor %}
+                        {% endif %}
                       </ul>
         
         
@@ -87,11 +78,14 @@
                       <h5 class="card-title mb-3">Property By City</h5>
         
                       <ul class="sidebar-card-list">
-                        <li><a href="#"><i class="mdi mdi-chevron-right"></i> New York <span class="sidebar-badge">220</span></a></li>
-                        <li><a href="#"><i class="mdi mdi-chevron-right"></i> Los Angeles <span class="sidebar-badge">150</span></a></li>
-                        <li><a href="#"><i class="mdi mdi-chevron-right"></i> Chicago <span class="sidebar-badge">100</span></a></li>
-                        <li><a href="#"><i class="mdi mdi-chevron-right"></i> Houston <span class="sidebar-badge">50</span></a></li>
-                        <li><a href="#"><i class="mdi mdi-chevron-right"></i> Philadelphia <span class="sidebar-badge">23</span></a></li>
+                        {% if city %}
+                          {% for city in city %}
+                            {% if city.num_property > 0%}
+                              <li><a href="{{ city.get_city_url }}"><i class="mdi mdi-chevron-right"></i> {{ city.title }} <span class="sidebar-badge">{{ city.num_property }}</span></a></li>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                        
                       </ul>
         
         
@@ -101,52 +95,32 @@
         
         
                   <div class="card">
-        
-                    <div class="card-body">
-                      <h5 class="card-title mb-4">Featured Properties</h5>
-        
-                      <div id="featured-properties" class="carousel slide" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                          <li data-target="#featured-properties" data-slide-to="0" class="active"></li>
-                          <li data-target="#featured-properties" data-slide-to="1"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                          <div class="carousel-item active">
-                            <div class="card card-list">
-                              <a href="#">
-                                <span class="badge badge-success">For Sale</span>
-                                <img class="card-img-top" src="img/list/1.png" alt="Card image cap">
-                                <div class="card-body">
-                                  <h5 class="card-title">House in Kent Street</h5>
-                                  <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> 127 Kent
-                                    Sreet, Sydny, NEW 2000</h6>
-                                  <h2 class="text-success mb-0 mt-3">
-                                    $130,000 <small>/month</small></h2>
+                      <div class="card-body">
+                          <h5 class="card-title mb-4">Featured Properties</h5>
+                          
+                          <div id="featured-properties" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                {% for featured in featured %}
+                                  <li data-target="#featured-properties" data-slide-to="{{ featured.count }}" class="{% if forloop.counter == 1 %}active{% endif %}"></li>
+                              <!-- <li data-target="#featured-properties" data-slide-to="1"></li> -->
+                                {% endfor %}
+                            </ol>
+                            <div class="carousel-inner">
+                              {% for featured in featured %}
+                                <div class="{% if forloop.counter == 1 %}carousel-item active{% else %} carousel-item{% endif %}">
+      
+                                  {% include 'property/snippet/featured_card_small.html' with instance=featured %}
+                                      
+                                  
                                 </div>
-        
-                              </a>
+                              {% endfor %}
+                              
                             </div>
                           </div>
-                          <div class="carousel-item">
-                            <div class="card card-list">
-                              <a href="#">
-                                <span class="badge badge-secondary">For Rent</span>
-                                <img class="card-img-top" src="img/list/2.png" alt="Card image cap">
-                                <div class="card-body">
-                                  <h5 class="card-title">Family House in Hudson</h5>
-                                  <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> Hoboken,
-                                    NJ, USA</h6>
-                                  <h2 class="text-success mb-0 mt-3">
-                                    $127,000 <small>/month</small></h2>
-                                </div>
-        
-                              </a>
-                            </div>
-                          </div>
-                        </div>
+            
+                        
                       </div>
         
-                    </div>
                   </div>
     
         
@@ -155,17 +129,15 @@
                 <div class="col-lg-9 col-md-9">
         
         
-        
+<!--         
                   <div class="osahan_top_filter row">
                     <div class="col-lg-6 col-md-6 tags-action">
-                      <span>For Rent <a href="#"><i class="mdi mdi-window-close"></i></a></span>
-                      <span>Plot/Land <a href="#"><i class="mdi mdi-window-close"></i></a></span>
+                      
         
                     </div>
                     <div class="col-lg-6 col-md-6 sort-by-btn float-right">
                       <div class="view-mode float-right">
-                        <a class="active" href="properties-grid.html"><i class="mdi mdi-grid"></i></a><a href="properties-list.html"><i
-                            class="mdi mdi-format-list-bulleted"></i></a>
+                       
                       </div>
                       <div class="dropdown float-right">
                         <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
@@ -173,15 +145,14 @@
                           <i class="mdi mdi-filter"></i> Sort by
                         </button>
                         <div class="dropdown-menu float-right" aria-labelledby="dropdownMenuButton">
-                          <a class="dropdown-item" href="#"><i class="mdi mdi-chevron-right"></i> Popularity </a>
+                        
                           <a class="dropdown-item" href="#"><i class="mdi mdi-chevron-right"></i> New </a>
-                          <a class="dropdown-item" href="#"><i class="mdi mdi-chevron-right"></i> Discount </a>
                           <a class="dropdown-item" href="#"><i class="mdi mdi-chevron-right"></i> Price: Low to High </a>
                           <a class="dropdown-item" href="#"><i class="mdi mdi-chevron-right"></i> Price: High to Low </a>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> -->
         
         
                     <div class="row">

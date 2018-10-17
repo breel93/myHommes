@@ -2,7 +2,9 @@ from django.shortcuts import render
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from property.models import Property
+from property.models import Property, City, Category
+from django.db.models import Count
+
 # Create your views here.
 
 
@@ -13,7 +15,13 @@ class SearchPropertyListView(ListView):
     def  get_context_data(self, *args, **kwargs):
         context = super(SearchPropertyListView, self).get_context_data(*args, **kwargs)
         query = self.request.GET.get('q')
+        city = City.objects.all().annotate(num_property = Count("property")).order_by("-num_property")
+        featured = Property.objects.filter(featured = True)[:3]
+        property_type  = Category.objects.all()
         context['query'] = query
+        context['city'] = city
+        context['property_type'] = property_type
+        context['featured'] = featured
         return context
 
     def get_queryset(self, *args, **kwargs):

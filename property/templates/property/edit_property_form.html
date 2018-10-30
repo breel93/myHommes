@@ -35,6 +35,11 @@
                                 <form method="post"  enctype="multipart/form-data">
                                     {% csrf_token %}
                                     {{ form|crispy }}
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <h6 class="card-title mb-4">Add More Images</h6>
+                                    {{ formset|crispy }}
                                     <button type="submit" class="btn btn-success btn-block">Save</button>
                                 </form>
         

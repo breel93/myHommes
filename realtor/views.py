@@ -34,24 +34,18 @@ class RealtorView(RealtorAccountMixin, FormMixin, View):
     template_name = "realtor/index.html"
     success_url = 'realtor:home'
 
-    # def post(self, request, *args, **kwargs):
-    #     form = self.get_form()
-    #     # form = NewRealtorForm()
-    #     if form.is_valid():
-    #         return self.form_valid(form)
-    #     else:
-    #         return self.form_invalid(form)
-
-    #     return render(request,  "realtor/index.html", {"form":form})
+  
     def post(self, request):
-        form = NewRealtorForm(request.POST)
-        if form.is_valid():
-            realtor = form.save(commit = False)
+        apply_form = NewRealtorForm(request.POST, request.FILES)
+        if apply_form.is_valid():
+            realtor = apply_form.save(commit = False)
             realtor.user = request.user
             realtor.save()
             return redirect('realtor:home')
-        context = {'form':form}
-        return render(request, self.template_name, context)
+        else:
+            return redirect('realtor:home')
+        # context = {'form':form}
+        # return render(request, self.template_name, context)
 
     def get(self, request, *args, **kwargs):
       
@@ -73,8 +67,9 @@ class RealtorView(RealtorAccountMixin, FormMixin, View):
         elif exists and active:
             context["title"] = "Realtor"
             # property = Property.objects.filter(realtor=account)
-            property = self.get_property()
+            property = self.get_property().order_by('-timestamp')
             context["property"] = property
+           
         else:
             pass
 
@@ -94,20 +89,7 @@ class RealtorUpdate(RealtorAccountMixin, UpdateView):
     form_class = NewRealtorForm
     success_url = reverse_lazy('realtor:home')
 
-    # def post(self, request):
-    #     form = NewRealtorForm(request.POST)
-    #     if form.is_valid():
-    #         realtor = form.save(commit = False)
-    #         realtor.user = request.user
-    #         realtor.save()
-    #         return redirect('realtor:home')
-    #     context = {'form':form}
-    #     return render(request, self.template_name, context)
-    
-    # def form_valid(self, form):
-    #     context = super(RealtorUpdate, self).form_valid(form)
-
-    #     return context
+  
 
         
 

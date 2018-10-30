@@ -70,7 +70,7 @@ pre_save.connect(city_pre_save_receiver, sender=City)
 
 
 class CityImage(models.Model):
-    city = models.ForeignKey(City, related_name='images')
+    city = models.ForeignKey(City, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='city/', null=True, blank=True)
 
     def __str__(self):
@@ -83,7 +83,7 @@ class Neighborhood(models.Model):
     title        = models.CharField(max_length=120, blank=True, unique=True)
     image        = models.ImageField(upload_to='properties/', null=True, blank=True)
     slug         = models.SlugField(blank=True,unique=True)
-    city         = models.ForeignKey(City,blank=True, default=1, max_length=300, unique=False)
+    city         = models.ForeignKey(City,blank=True, default=1, max_length=300, unique=False, on_delete=models.CASCADE)
     
 
     def get_neighborhood_url(self):
@@ -114,7 +114,7 @@ def neighborhood_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(neighborhood_pre_save_receiver, sender=Neighborhood)
 
 class NeighborhoodImage(models.Model):
-    neighborhood = models.ForeignKey(Neighborhood, related_name='images')
+    neighborhood = models.ForeignKey(Neighborhood, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='neigborhood/', null=True, blank=True)
 
     def __str__(self):
@@ -247,16 +247,16 @@ PURPOSE = (
 
 class Property(models.Model):
     # realtor = models.ForeignKey(User, related_name='property')
-    realtor = models.ForeignKey(Realtor)
+    realtor = models.ForeignKey(Realtor, on_delete=models.CASCADE)
     title = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True)
     address = models.CharField(blank=True, max_length=300)
-    neighborhood = models.ForeignKey(Neighborhood,blank=True,default="", max_length=300, unique=False)
-    city = models.ForeignKey(City,blank=True, default="", max_length=300, unique=False)
+    neighborhood = models.ForeignKey(Neighborhood,blank=True,default="", max_length=300, unique=False, on_delete=models.CASCADE)
+    city = models.ForeignKey(City,blank=True, default="", max_length=300, unique=False, on_delete=models.CASCADE)
     storey = models.CharField(_('storey'), blank=True, max_length=300,
                               choices=STOREY, unique=False)
 
-    category = models.ForeignKey(Category, default="", max_length=300, unique=False)
+    category = models.ForeignKey(Category, default="", max_length=300, unique=False, on_delete=models.CASCADE)
 
     bedroom = models.CharField(_('bed'), max_length=300,
                                choices=BEDROOM, unique=False)
@@ -309,13 +309,20 @@ class Property(models.Model):
 
 
 class Images(models.Model):
-    # user = models.ForeignKey(User)
-    property = models.ForeignKey(Property, related_name='images')
+    property = models.ForeignKey(Property, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='properties/', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Image'
         verbose_name_plural = 'Images'
+    def __str__(self):
+        return self.property.title
+
+# def create_more_images(sender, **kwarg):
+#     if kwarg ['created']:
+#         property_images = Images.objects.create(user=kwarg['instance'])
+
+# post_save.connect(create_more_images, sender=Property) 
 
 
 class MyProperty(models.Model):

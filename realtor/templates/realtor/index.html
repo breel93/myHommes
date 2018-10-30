@@ -93,7 +93,7 @@
                             <div class="card padding-card">
                                 <div class="card-body">
                                     <h5 class="card-title mb-4">Create Realtor</h5>
-                                    <form method="post">
+                                    <form method="post" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         {{ apply_form|crispy }} 
                                         <button type="submit" class="btn btn-success btn-block">Save</button>
@@ -117,26 +117,23 @@
         <!-- My Properties -->
         <section class="section-padding">
             <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-md-8 mx-auto">
-                
-                        {% if property  %}
+            
+                {% if property  %}
                         
                     
-                    
-                            <div class="row">
-                                {% for instance in property %}
-                                    {% include 'property/snippet/property_card_horizontal.html' %}
+                
+                    <div class="row">
+                        {% for instance in property %}
+                            {% include 'property/snippet/property_card_horizontal.html' %}
                                                     
-                                {% endfor %}
-                            </div>
+                        {% endfor %}
+                    </div>
                         {% else %}
                             <h5> You don't have property yet</h5>
                             <h6> add new property </h6>
                         {% endif %}
                     </div>
-                </div>
-            </div>
+           
         </section>
                 <!-- End My Properties -->
     {% endif %}

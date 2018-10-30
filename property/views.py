@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch
+from django.forms import modelformset_factory, inlineformset_factory
 
 # Create your views here.
 from django.shortcuts import render, redirect, reverse
 import random
-from .models import Property, PropertyRating, MyProperty, Neighborhood, City, Category
+from .models import Property, PropertyRating, MyProperty, Neighborhood, City, Category, Images
 from .mixins import PropertyManagerMixin
 from django.db.models import Count
 from tag.models import Tag
@@ -84,31 +85,54 @@ class PropertyRatingView(AjaxRequiredMixin, View):
         return JsonResponse(data)
 
 
-
-
-
-
 class PropertyCreateView(RealtorAccountMixin, SubmitBtnMixin, CreateView):
     template_name = "property/create_property_form.html"
-    form_class = PropertyForm
     success_url = 'realtor:home'
 
-    def form_valid(self, form):
-        realtor = self.get_account()
-        form.instance.realtor = realtor
-        valid_data = super(PropertyCreateView, self).form_valid(form)
-        # form.instance.managers.add(user)
-        # add all default users
-        tag = form.cleaned_data.get("tags")
-        if tag:
-            tag_list = tag.split(",")
-            for tag in tag_list:
-                if not tag == "":
-                    new_tag = Tag.objects.get_or_create(title=str(tag).strip())[0]
-                    new_tag.property.add(form.instance)
-        return valid_data
+    def get(self, request):
+        Property_ImagesFormSet = modelformset_factory(Images, fields=('image',), extra=4, max_num=5)
+        form = PropertyForm()
+        formset = Property_ImagesFormSet(queryset=Images.objects.none())
+        context = {'form':form, 'formset':formset}
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        Property_ImagesFormSet = modelformset_factory(Images, fields=('image',), extra=4, max_num=5)
+        form = PropertyForm(request.POST or None, request.FILES or None)
+        formset = Property_ImagesFormSet(request.POST or None, request.FILES or None)
+        
+        
+        if form.is_valid() :
+            property = form.save(commit = False)
+            tag = form.cleaned_data.get("tags")
+            realtor = self.get_account()
+            property.realtor = realtor
+            property.save()
+            if tag:
+                tag_list = tag.split(",")
+                for tag in tag_list:
+                    if not tag == "":
+                        new_tag = Tag.objects.get_or_create(title=str(tag).strip())[0]
+                        new_tag.save()
+                        new_tag.property.add(form.instance or None)
+            
+            if formset.is_valid():
+                for f in formset:
+                    try:
+                        property_images = Images(property = property,image = f.cleaned_data['image'])
+                        property_images.save()
+                    except Exception as e:
+                        break
+            
+            
+            
+            return redirect('realtor:home')
+        
+        
+            
+    
 
-   
+
    
 # PropertyManagerMixin, 
 
@@ -116,10 +140,52 @@ class PropertyUpdateView(PropertyManagerMixin, SubmitBtnMixin, MultiSlugMixin, U
     model = Property
     template_name = "property/edit_property_form.html"
     form_class = PropertyForm
+
     success_url = "/property/"
     submit_btn = "Update Property"
 
+    def get_context_data(self, **kwargs):
+        context = super(PropertyUpdateView, self).get_context_data(**kwargs)
+        Property_ImagesFormSet = modelformset_factory(Images, fields=('image',), extra=0)
+        qs = Images.objects.filter(property=self.get_object())
+        formset = Property_ImagesFormSet(queryset=qs)
+        context['formset'] = formset
+        return context
 
+    def post(self, request, **kwargs):
+        object = self.get_object()
+        Property_ImagesFormSet = modelformset_factory(Images, fields=('image',))
+        form = PropertyForm(request.POST, request.FILES, instance=object )
+        formset = Property_ImagesFormSet(request.POST or None , request.FILES or None)
+        
+        
+        if form.is_valid() :
+            property = form.save(commit = False)
+            tag = form.cleaned_data.get("tags")
+            realtor = self.get_account()
+            property.realtor = realtor
+            property.save()
+            obj = self.get_object()
+            obj.tag_set.clear()
+            if tag:
+                tag_list = tag.split(",")
+                for tag in tag_list:
+                    if not tag == "":
+                        new_tag = Tag.objects.get_or_create(title=str(tag).strip())[0]
+                        new_tag.save()
+                        new_tag.property.add(form.instance or None)
+            
+            if formset.is_valid():
+                formset.save()
+                # for f in formset:
+                #     try:
+                #         property_images = Images(property = property,image = f.cleaned_data['image'])
+                #         property_images.save()
+                #     except Exception as e:
+                #         break
+            
+            return redirect('realtor:home')
+ 
 
     def get_initial(self):
         initial = super(PropertyUpdateView, self).get_initial()
@@ -127,22 +193,6 @@ class PropertyUpdateView(PropertyManagerMixin, SubmitBtnMixin, MultiSlugMixin, U
         initial["tags"] = ", ".join([x.title for x in tags])
 
         return initial
-
-    def form_valid(self, form):
-        valid_data = super(PropertyUpdateView, self).form_valid(form)
-
-        tags = form.cleaned_data.get("tags")
-        obj = self.get_object()
-        obj.tag_set.clear()
-        if tags:
-            tags_list = tags.split(",")
-
-            for tag in tags_list:
-                if not tag == " ":
-                    new_tag = Tag.objects.get_or_create(title=str(tag).strip())[0]
-                    new_tag.property.add(self.get_object())
-        return valid_data
-
 
 
 
@@ -235,7 +285,8 @@ def get_neighborhood(request, slug, neighborhood_slug):
     featured = Property.objects.filter(featured = True,city__slug=slug, neighborhood__slug = neighborhood_slug)[:3]
     property_type  = Category.objects.filter()
     neigborhood_name = Neighborhood.objects.filter(city__slug=slug, slug=neighborhood_slug)[:1]
-    city =  city_name = City.objects.filter(slug=slug)[:1]
+    # city =  city_name = City.objects.filter(slug=slug)[:1]
+    city = City.objects.filter(slug=slug)[:1]
     context = {  
         'neighborhood_property' : neighborhood_property , 
         'city_neigborhoods' : city_neigborhoods,
@@ -272,27 +323,3 @@ class UserFavoriteProperty(LoginRequiredMixin, ListView):
 
 
 
-# class RealtorsListView(ListView):
-# 	model = Property
-# 	template_name = "products/realtor_list.html"
-
-# 	def get_object(self):
-# 		ema= self.kwargs.get("email")
-# 		seller = get_object_or_404(Realtor, user__username=username)
-# 		return seller
-
-# 	def get_context_data(self, *args, **kwargs):
-# 		context = super(RealtorsListView, self).get_context_data(*args, **kwargs)
-# 		context["vendor_name"] = str(self.get_object().user.username)
-# 		return context
-
-# 	def get_queryset(self, *args, **kwargs):
-# 		seller = self.get_object()
-# 		qs = super(VendorListView, self).get_queryset(**kwargs).filter(seller=seller)
-# 		query = self.request.GET.get("q")
-# 		if query:
-# 			qs = qs.filter(
-# 					Q(title__icontains=query)|
-# 					Q(description__icontains=query)
-# 				).order_by("title")
-# 		return qs

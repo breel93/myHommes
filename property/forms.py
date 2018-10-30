@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 from django.forms.models import modelformset_factory
-from .models import Property
+from .models import Property, Images
 
 
 
@@ -44,4 +44,10 @@ class PropertyForm(forms.ModelForm):
         }
 
 
+# class Property_ImagesForm(forms.ModelForm):
+#     class Meta:
+#         model = Images
+#         fields = ('image',)
+
+# # Property_ImagesFormSet = inlineformset_factory(Property,Images, form=Property_ImagesForm, extra=1)
 

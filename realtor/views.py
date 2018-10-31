@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from django.views.generic import View, UpdateView, DetailView, ListView
+from django.views.generic import View, UpdateView, DetailView, ListView, CreateView
 from django.views.generic.edit import FormMixin
 from .forms import NewRealtorForm
 from real.mixins import LoginRequiredMixin
@@ -29,41 +29,23 @@ class RealtorDetailRedirectView(RedirectView):
         return obj.get_absolute_url()
 
 
-class RealtorView(RealtorAccountMixin, FormMixin, View):
-    # form_class = NewRealtorForm
+class RealtorView(RealtorAccountMixin, View):
+    
     template_name = "realtor/index.html"
-    success_url = 'realtor:home'
-
-  
-    def post(self, request, **kwargs):
-        apply_form = NewRealtorForm(request.POST, request.FILES)
-        if apply_form.is_valid():
-            realtor = apply_form.save(commit = False)
-            realtor.user = request.user
-            realtor.save()
-        else:
-            return redirect('realtor:home')
-        return redirect('realtor:home')
-        # context = {'form':form}
-        # return render(request, self.template_name, context)
-
+    
     def get(self, request, *args, **kwargs):
       
-        # apply_form = self.get_form()
-        apply_form = NewRealtorForm()
+        
         account = Realtor.objects.filter(user=self.request.user)
         exists = account.exists()
         active = None
-        context = {}
+        context = {} 
 
         if exists:
             account = account.first()
             active = account.active
 
-        if not exists and not active:
-            context["title"] = "Apply for Account"
-            context["apply_form"] = apply_form
-        elif exists and not active:
+        if exists and not active:
             context["title"] = "Account Pending"
         elif exists and active:
             context["title"] = "Realtor"
@@ -83,6 +65,36 @@ class RealtorView(RealtorAccountMixin, FormMixin, View):
 
     # def form_invalid(self, form):
     #         pass
+
+class RealtorCreate(CreateView,FormMixin):
+
+    form_class = NewRealtorForm
+    template_name = "realtor/create_realtor.html"
+    success_url = 'realtor:home'
+
+    def get(self, request, *args, **kwargs):
+        # apply_form = self.get_form()
+        context = {} 
+        apply_form = NewRealtorForm()
+        context["title"] = "Apply for Account"
+        context["apply_form"] = apply_form
+        return render(request, "realtor/create_realtor.html", context)
+
+
+    def post(self, request, **kwargs):
+        apply_form = NewRealtorForm(request.POST, request.FILES)
+        if apply_form.is_valid():
+            realtor = apply_form.save(commit = False)
+            realtor.user = request.user
+            realtor.save()
+        else:
+            return redirect('realtor:create_realtor')
+        return redirect('realtor:home')
+        # context = {'form':form}
+        # return render(request, self.template_name, context)
+    
+
+
 
 class RealtorUpdate(RealtorAccountMixin, UpdateView):
     model = Realtor

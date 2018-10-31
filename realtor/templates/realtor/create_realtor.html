@@ -1,0 +1,83 @@
+
+
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+             <!-- Inner Header -->
+
+            
+    <section class="section-padding bg-dark inner-header" >
+    
+         
+    <!-- <section class="section-padding bg-dark inner-header">. -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    {% if apply_form %}
+                            <h1 class="mt-0 mb-3 text-white">Create Realtor</h1>
+                        <div class="breadcrumbs">
+                                <p class="mb-0 text-white"><a class="text-white" href="/">Home</a>  /  <span class="text-success">Create Realtor Account</span></p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+
+       <section class="tab-view">
+            <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                        <ul class="nav justify-content-center">
+                         
+                         {% if apply_form %}
+                            <li class="nav-item">
+                                    <a class="nav-link active text-success" href="#">Create Realtor</a>
+                            </li>
+                        {% endif %}
+                        </ul>
+                        </div>
+                    </div>
+            </div>
+        </section>
+       
+
+
+
+
+
+    {% if apply_form %}
+
+        <section class="section-padding">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 mx-auto">
+                            <div class="card padding-card">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-4">Create Realtor</h5>
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {{ apply_form|crispy }} 
+                                        <button type="submit" class="btn btn-success btn-block">Save</button>
+                                    </form>
+            
+                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
+
+    {% endif %}
+
+
+
+
+{% endblock %}

@@ -12,13 +12,15 @@ from .views import (
         # Realtor_Profile,
         RealtorUpdate,
         RealtorsListView,
-        RealtorsDetailView
+        RealtorsDetailView,
+        RealtorCreate
 
         
         )
 
 urlpatterns = [ 
     url(r'^$', RealtorView.as_view(), name='home'),
+    url(r'^create/$', RealtorCreate.as_view(), name='create_reator'),
     url(r'^update/(?P<pk>\d+)/$', RealtorUpdate.as_view(), name='update'),
     url(r'^property/$',RealtorPropertyListView.as_view(),name='property_list'),
     url(r'^property/create/$',PropertyCreateView.as_view(),name='create'),

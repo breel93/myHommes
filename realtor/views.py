@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.views.generic import View, UpdateView, DetailView, ListView, CreateView
-from django.views.generic.edit import FormMixin
+
 from .forms import NewRealtorForm
 from real.mixins import LoginRequiredMixin
 # Create your views here.
@@ -66,25 +66,23 @@ class RealtorView(RealtorAccountMixin, View):
     # def form_invalid(self, form):
     #         pass
 
-class RealtorCreate(CreateView,FormMixin):
-
-    form_class = NewRealtorForm
+class RealtorCreate(CreateView):
     template_name = "realtor/create_realtor.html"
     success_url = 'realtor:home'
 
     def get(self, request, *args, **kwargs):
         # apply_form = self.get_form()
         context = {} 
-        apply_form = NewRealtorForm()
+        form = NewRealtorForm()
         context["title"] = "Apply for Account"
-        context["apply_form"] = apply_form
+        context["apply_form"] = form
         return render(request, "realtor/create_realtor.html", context)
 
 
     def post(self, request, **kwargs):
-        apply_form = NewRealtorForm(request.POST, request.FILES)
-        if apply_form.is_valid():
-            realtor = apply_form.save(commit = False)
+        form = NewRealtorForm(request.POST, request.FILES or None)
+        if form.is_valid():
+            realtor = form.save(commit = False)
             realtor.user = request.user
             realtor.save()
         else:

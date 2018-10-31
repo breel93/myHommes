@@ -23,12 +23,12 @@
                     {% if apply_form %}
                             <h1 class="mt-0 mb-3 text-white">Create Realtor</h1>
                         <div class="breadcrumbs">
-                                <p class="mb-0 text-white"><a class="text-white" href="#">Home</a>  /  <span class="text-success">Create Realtor Account</span></p>
+                                <p class="mb-0 text-white"><a class="text-white" href="/">Home</a>  /  <span class="text-success">Create Realtor Account</span></p>
                         </div>
                     {% else %}
                         <h1 class="mt-0 mb-3 text-white">My Properties</h1>
                         <div class="breadcrumbs">
-                                <p class="mb-0 text-white"><a class="text-white" href="#">Home</a>  /  <span class="text-success">{{ request.user.first_name }}</span></p>
+                                <p class="mb-0 text-white"><a class="text-white" href="/">Home</a>  /  <span class="text-success">{{ request.user.first_name }}</span></p>
                         </div>
                     {% endif %}
                 </div>

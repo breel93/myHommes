@@ -36,7 +36,7 @@ class RealtorView(RealtorAccountMixin, FormMixin, View):
 
   
     def post(self, request):
-        apply_form = NewRealtorForm(request.POST, request.FILES)
+        apply_form = NewRealtorForm(request.POST or None, request.FILES or None)
         if apply_form.is_valid():
             realtor = apply_form.save(commit = False)
             realtor.user = request.user

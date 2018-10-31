@@ -35,15 +35,15 @@ class RealtorView(RealtorAccountMixin, FormMixin, View):
     success_url = 'realtor:home'
 
   
-    def post(self, request):
-        apply_form = NewRealtorForm(request.POST or None, request.FILES or None)
+    def post(self, request, **kwargs):
+        apply_form = NewRealtorForm(request.POST, request.FILES)
         if apply_form.is_valid():
             realtor = apply_form.save(commit = False)
             realtor.user = request.user
             realtor.save()
-            return redirect('realtor:home')
         else:
             return redirect('realtor:home')
+        return redirect('realtor:home')
         # context = {'form':form}
         # return render(request, self.template_name, context)
 

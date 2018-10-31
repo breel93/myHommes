@@ -30,7 +30,7 @@ class RealtorDetailRedirectView(RedirectView):
 
 
 class RealtorView(RealtorAccountMixin, FormMixin, View):
-    form_class = NewRealtorForm
+    # form_class = NewRealtorForm
     template_name = "realtor/index.html"
     success_url = 'realtor:home'
 
@@ -49,7 +49,8 @@ class RealtorView(RealtorAccountMixin, FormMixin, View):
 
     def get(self, request, *args, **kwargs):
       
-        apply_form = self.get_form()
+        # apply_form = self.get_form()
+        apply_form = NewRealtorForm()
         account = Realtor.objects.filter(user=self.request.user)
         exists = account.exists()
         active = None
@@ -75,13 +76,13 @@ class RealtorView(RealtorAccountMixin, FormMixin, View):
 
         return render(request, "realtor/index.html", context)
 
-    def form_valid(self, form):
-        valid_data = super(RealtorView, self).form_valid(form)
-        obj = Realtor.objects.create(user=self.request.user)
-        return valid_data
+    # def form_valid(self, form):
+    #     valid_data = super(RealtorView, self).form_valid(form)
+    #     obj = Realtor.objects.create(user=self.request.user)
+    #     return valid_data
 
-    def form_invalid(self, form):
-            pass
+    # def form_invalid(self, form):
+    #         pass
 
 class RealtorUpdate(RealtorAccountMixin, UpdateView):
     model = Realtor

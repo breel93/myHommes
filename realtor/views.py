@@ -66,7 +66,7 @@ class RealtorView(RealtorAccountMixin, View):
     # def form_invalid(self, form):
     #         pass
 
-class RealtorCreate(CreateView):
+class RealtorCreate(CreateView, SubmitBtnMixin):
     template_name = "realtor/create_realtor.html"
     success_url = 'realtor:home'
 
@@ -85,11 +85,13 @@ class RealtorCreate(CreateView):
             realtor = form.save(commit = False)
             realtor.user = request.user
             realtor.save()
-        else:
-            return redirect('realtor:create_realtor')
         return redirect('realtor:home')
         # context = {'form':form}
         # return render(request, self.template_name, context)
+    def form_valid(self, form):
+        valid_data = super(RealtorView, self).form_valid(form)
+        obj = Realtor.objects.create(user=self.request.user)
+        return valid_data
     
 
 

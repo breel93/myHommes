@@ -69,6 +69,7 @@ class RealtorView(RealtorAccountMixin, View):
 class RealtorCreate(CreateView, SubmitBtnMixin):
     template_name = "realtor/create_realtor.html"
     success_url = 'realtor:home'
+    form = NewRealtorForm()
 
     def get(self, request, *args, **kwargs):
         # apply_form = self.get_form()

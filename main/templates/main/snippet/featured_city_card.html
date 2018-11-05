@@ -1,0 +1,24 @@
+<div class="col-lg-4 col-md-4">
+    <div class="card bg-dark text-white card-overlay">
+       <a href="{{ instance.get_city_url }}">
+            {% if instance.image %}
+                <img class="card-img" src="{{ instance.image.url }}" alt="Card image">
+            {% endif %}
+            <div class="card-img-overlay">
+             <h3 class="card-title text-white">{{instance.title}}</h3>
+             <p class="card-text text-white">
+                {% if instance.num_property > 0 %}
+                    
+                    {% if instance.num_property == 1%}
+                        {{instance.num_property}} Property
+                    {% else %}
+                        {{instance.num_property}} Properties
+                    {% endif %}
+                {% else %}
+                    comming soon
+                {% endif %}
+                </p>
+          </div>
+       </a>
+    </div>
+ </div>

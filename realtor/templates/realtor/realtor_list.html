@@ -22,7 +22,7 @@
         </div>
     </section>
 
-    {% if object_list %}
+    {% if realtors %}
      <!-- Trusted Agents -->
      <section class="section-padding">
         <div class="section-title text-center mb-5">
@@ -31,11 +31,19 @@
         </div>
         <div class="container">
            <div class="row">
-               {% for realtor in object_list %}
-                    {% include 'realtor/snippet/realtor_card.html' with instance=realtor %}
-               {% endfor%}
+               {% for realtor in realtors %}
+                    {% if realtor.num_property > 0%}
+                        {% include 'realtor/snippet/realtor_card.html' with instance=realtor %}
+                    {% endif %}
+                {% endfor%}
+
               
            </div>
+            {% if is_paginated %}
+                    
+                    {% include 'property/snippet/paginator.html' with paginate=page_obj %}
+                         
+            {% endif %}
         </div>
      </section>
      <!-- End Trusted Agents -->

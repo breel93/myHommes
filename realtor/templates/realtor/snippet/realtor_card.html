@@ -8,6 +8,18 @@
                     <p class="mb-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been.</p>
                     <h6 class="mb-0 text-success">- {{ instance.user.first_name }}  {{ instance.user.last_name }}</h6>
                 <small>{{ instance.company_name }}</small>
+                <p>
+                    {% if instance.num_property > 0 %}
+                    
+                        {% if instance.num_property == 1%}
+                            ({{instance.num_property}} Property)
+                        {% else %}
+                            ({{instance.num_property}} Properties)
+                        {% endif %}
+                    {% else %}
+                        comming soon
+                    {% endif %}
+                </p>
             </div>
         </a>     
     </div>

@@ -17,8 +17,10 @@ from real.mixins import (
     MultiSlugMixin,
     SubmitBtnMixin
 )
+from django.db.models import Count
 
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from random import shuffle
 
 
 
@@ -50,7 +52,20 @@ class RealtorView(RealtorAccountMixin, View):
         elif exists and active:
             context["title"] = "Realtor"
             # property = Property.objects.filter(realtor=account)
-            property = self.get_property().order_by('-timestamp')
+            property_list = self.get_property().order_by('-timestamp')
+            shuffle(property_list)
+            paginator = Paginator(property_list, 10)
+            page = self.request.GET.get('page')
+            
+
+            try:
+                property = paginator.page(page)
+            except PageNotAnInteger:
+                property = paginator.page(1)
+            except EmptyPage:
+                property = paginator.page(paginator.num_pages)
+
+            
             context["property"] = property
            
         else:
@@ -86,6 +101,8 @@ class RealtorCreate(CreateView, SubmitBtnMixin):
             realtor = form.save(commit = False)
             realtor.user = request.user
             realtor.save()
+        else:
+            return redirect('realtor:create_reator')
         return redirect('realtor:home')
         # context = {'form':form}
         # return render(request, self.template_name, context)
@@ -109,8 +126,35 @@ class RealtorUpdate(RealtorAccountMixin, UpdateView):
 
 class RealtorsListView(ListView):
     template_name = "realtor/realtor_list.html"
-    queryset      = Realtor.objects.all()[:50]
+    queryset      = Realtor.objects.all().annotate(num_property = Count("property")).order_by("-num_property")
+    paginate_by = 12
+    context_object_name = 'realtors'
+
+
+    
 
 class RealtorsDetailView(DetailView):
-    queryset = Realtor.objects.all()
+    queryset = Realtor.objects.all().annotate(num_property = Count("property")).order_by("-num_property")
+    
     template_name = "realtor/realtor_detail.html"
+    def get_context_data(self,*args, **kwargs):
+        context = super(RealtorsDetailView, self).get_context_data(*args, **kwargs)
+        realtor_id = self.kwargs['pk']
+        realtor_property_list = list(Property.objects.filter(realtor__id=realtor_id))
+        shuffle(realtor_property_list)
+        paginator = Paginator(realtor_property_list, 12)
+        page = self.request.GET.get('page')
+        
+
+        try:
+            realtor_property = paginator.page(page)
+        except PageNotAnInteger:
+            realtor_property = paginator.page(1)
+        except EmptyPage:
+            realtor_property = paginator.page(paginator.num_pages)
+
+        
+        context['realtor_property'] = realtor_property
+        return context
+    
+    

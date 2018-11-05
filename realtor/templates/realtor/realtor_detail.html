@@ -24,6 +24,8 @@
         </div>
     </section>
 
+    
+
     {% if object %}
     <!-- Trusted Agents -->
     <section class="section-padding">
@@ -51,6 +53,19 @@
                                 <p><strong class="text-dark">Website :</strong> {{ object.website }}</p>
                             {% endif %}
                             <p><strong class="text-dark">City :</strong> {{ object.city }}</p>
+                           
+                                <p><strong class="text-dark">Properties :</strong>
+                                        {% if object.num_property > 0 %}
+                                        
+                                            {% if object.num_property == 1%}
+                                                ({{object.num_property}}) 
+                                            {% else %}
+                                                ({{object.num_property}})
+                                            {% endif %}
+                                    
+                                        {% endif %}
+                                </p>
+                            
                     
                         </div>
     
@@ -66,6 +81,26 @@
         </div>
     </section>
     <!-- End Trusted Agents -->
+
+     <!-- My Properties -->
+    <section class="section-padding  border-top">
+        <div class="container">
+                <div class="col-lg-12 col-md-12 section-title text-left mb-4">
+                    <h2>{{ object.user.first_name }} Properties</h2>
+                </div>
+            <div class="row">
+                
+                {% for property in realtor_property %} 
+                    {% include 'property/snippet/property_card.html' with instance=property %}
+                     
+                {% endfor %}
+    
+    
+            </div>
+            {% include 'property/snippet/paginator.html' with paginate=realtor_property %}
+        </div>
+    </section>
+         <!-- End My Properties -->
 
 
     

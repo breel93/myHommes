@@ -20,6 +20,8 @@ from django.shortcuts import render
 # Create your views here.
 
 from property.models import Property, City
+from random import shuffle
+import random
 
 
 # Create your views here.
@@ -170,16 +172,19 @@ class MainView(View):
                 property = property.distinct()
                 property = sorted(property, key=lambda x: random.random())
 
-        featured_property = Property.objects.filter(featured = True)[:12]
+        featured_property = list(Property.objects.filter(featured = True))
+        shuffle(featured_property)
         # city          = City.objects.filter(slug__in = ["abuja" , "lagos" , "ibadan" , "calabar" , "kano","port-harcourt"]).order_by("id")
-        city          = City.objects.filter(slug__in = ["abuja" , "lagos" , "ibadan" , "calabar" , "kano","port-harcourt"]).annotate(num_property = Count("property")).order_by("-num_property")
+        featured_cities          = City.objects.filter(slug__in = ["abuja" , "lagos" , "ibadan" , "calabar" , "kano","port-harcourt"]).annotate(num_property = Count("property")).order_by("-num_property")
 
+        cities = City.objects.all().annotate(num_property = Count("property")).order_by("-num_property")
 
         context = {
             "property": property,
             "top_tags": top_tags,
             "featured_property":featured_property,
-            "city":city
+            "featured_cities":featured_cities,
+            "cities" : cities
         }
         return render(request, "main/index.html", context)
 

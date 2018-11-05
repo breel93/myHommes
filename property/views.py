@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Prefetch
 from django.forms import modelformset_factory, inlineformset_factory
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 # Create your views here.
 from django.shortcuts import render, redirect, reverse
@@ -35,6 +36,7 @@ from .forms import PropertyForm
 from realtor.mixins import RealtorAccountMixin
 from real.mixins import AjaxRequiredMixin
 from realtor.models import Realtor
+from random import shuffle
 
 
 # Create your views here.
@@ -230,24 +232,40 @@ class PropertyDetailSlugView(DetailView):
                 new_view = TagView.objects.add_count(self.request.user, tag)
        
         
-        context['featured'] = Property.objects.filter(featured = True)[:6]
-        
+        featured = list(Property.objects.filter(featured = True, city__slug = slug))
+
+        shuffle(featured)
+
+        context['featured'] = featured
         return context
    
 class PropertyListView(TemplateView):
-    # queryset = Property.objects.all()
+    
     template_name = "property/property_list.html"
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super(PropertyListView, self).get_context_data(*args, **kwargs)
-    #     print(dir(context.get('page_obj'))) .order_by('-created')
-    #     return context
+    
     def get_context_data(self, *args, **kwargs):
-        property = Property.objects.all()[:50]
+        
+        property_list = list(Property.objects.all())
+        shuffle(property_list)
+        paginator = Paginator(property_list, 10)
+        page = self.request.GET.get('page')
+        
+
+        try:
+            property = paginator.page(page)
+        except PageNotAnInteger:
+            property = paginator.page(1)
+        except EmptyPage:
+            property = paginator.page(paginator.num_pages)
+
+
+
         property_type  = Category.objects.all()
         city = City.objects.all().annotate(num_property = Count("property")).order_by("-num_property")
-        featured = Property.objects.filter(featured = True)[:3]
+        featured = list(Property.objects.filter(featured = True))
 
+        shuffle(featured)
         context = { 'property_type':property_type,
                     'city': city, 
                     'property':property,
@@ -262,14 +280,31 @@ class PropertyCategoryListView(ListView):
 
 
 def get_city(request, slug, **kwargs):
-    city_property = Property.objects.filter(city__slug=slug)
+    city_property_list = list(Property.objects.filter(city__slug=slug))
+    shuffle(city_property_list)
+    paginator = Paginator(city_property_list, 10)
+    page = request.GET.get('page')
+        
+
+    try:
+        city_property = paginator.page(page)
+    except PageNotAnInteger:
+        city_property = paginator.page(1)
+    except EmptyPage:
+        city_property = paginator.page(paginator.num_pages)
+
+
+    
+
+
+    
     neigborhood_name = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
     property_type  = Category.objects.all()
     city_name = City.objects.filter(slug=slug)[:1]
-    # property_type  = Category.objects.filter(property__city=slug).annotate(num_property = Count("property")).order_by("-num_property")
     
    
-    featured = Property.objects.filter(featured = True,city__slug=slug)[:3]
+    featured = list(Property.objects.filter(featured = True,city__slug=slug))
+    shuffle(featured)
     context = { 'city_property' : city_property,
                 'neigborhood_name':neigborhood_name,
                 'property_type':property_type,
@@ -280,12 +315,29 @@ def get_city(request, slug, **kwargs):
 
 
 def get_neighborhood(request, slug, neighborhood_slug):
-    neighborhood_property = Property.objects.filter(city__slug=slug, neighborhood__slug = neighborhood_slug)
+    neighborhood_property_list = list(Property.objects.filter(city__slug=slug, neighborhood__slug = neighborhood_slug))
+    shuffle(neighborhood_property_list)
+    paginator = Paginator(neighborhood_property_list, 10)
+    page = request.GET.get('page')
+        
+
+    try:
+        neighborhood_property = paginator.page(page)
+    except PageNotAnInteger:
+        neighborhood_property = paginator.page(1)
+    except EmptyPage:
+        neighborhood_property = paginator.page(paginator.num_pages)
+
+
+    
     city_neigborhoods = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
-    featured = Property.objects.filter(featured = True,city__slug=slug, neighborhood__slug = neighborhood_slug)[:3]
+    featured = list(Property.objects.filter(featured = True,city__slug=slug, neighborhood__slug = neighborhood_slug))
     property_type  = Category.objects.filter()
     neigborhood_name = Neighborhood.objects.filter(city__slug=slug, slug=neighborhood_slug)[:1]
     # city =  city_name = City.objects.filter(slug=slug)[:1]
+
+    shuffle(featured)
+
     city = City.objects.filter(slug=slug)[:1]
     context = {  
         'neighborhood_property' : neighborhood_property , 

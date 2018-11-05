@@ -9,10 +9,12 @@
                 {% else %}
                   <span class="badge badge-secondary">For {{ instance.category }}</span>
                 {% endif %}
+              
 
                 {% if instance.main_image %}
                   <img class="card-img-top" src="{{instance.main_image.url}}" alt="Card image cap">
                 {% endif %}
+
                 <div class="card-body">
                    <h5 class="card-title">{{instance.title}}</h5>
                    <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> {{ instance.address| truncatewords:20 }}</h6>

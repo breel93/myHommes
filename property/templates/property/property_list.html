@@ -85,13 +85,13 @@
                     
                     <div id="featured-properties" class="carousel slide" data-ride="carousel">
                       <ol class="carousel-indicators">
-                          {% for featured in featured %}
+                          {% for featured in featured|slice:":3" %}
                             <li data-target="#featured-properties" data-slide-to="{{ featured.count }}" class="{% if forloop.counter == 1 %}active{% endif %}"></li>
                         <!-- <li data-target="#featured-properties" data-slide-to="1"></li> -->
                           {% endfor %}
                       </ol>
                       <div class="carousel-inner">
-                        {% for featured in featured %}
+                        {% for featured in featured|slice:":3" %}
                           <div class="{% if forloop.counter == 1 %}carousel-item active{% else %} carousel-item{% endif %}">
 
                             {% include 'property/snippet/featured_card_small.html' with instance=featured %}
@@ -145,26 +145,19 @@
 
                     {% endfor %}
                 </div>
+
+                 
+                                  
+                {% include 'property/snippet/paginator.html' with paginate=property %}
+                          
+
+              
     
-              <nav class="mt-5">
-                <ul class="pagination justify-content-center">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1"><i class="mdi mdi-chevron-left"></i></a>
-                  </li>
-                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item"><a class="page-link" href="#">...</a></li>
-                  <li class="page-item"><a class="page-link" href="#">10</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#"><i class="mdi mdi-chevron-right"></i></a>
-                  </li>
-                </ul>
-              </nav>
-    
+                
+      
+              </div>
             </div>
           </div>
-        </div>
       </section>
       <!-- End Properties List -->
 

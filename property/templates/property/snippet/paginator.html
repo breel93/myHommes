@@ -1,0 +1,36 @@
+
+        <nav class="mt-5">
+                <ul class="pagination justify-content-center"> 
+                {% if paginate.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                        <li class="page-item ">
+              
+                            <a class="page-link" href="?page={{ paginate.previous_page_number }}"><i class="mdi mdi-chevron-left"></i></a>
+                            
+                        </li>
+                {% endif %}
+                  <!-- <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+
+                   <div class="card" style="margin-left: 5px; margin-top: 2px; margin-right: 5px">
+                        <h6 style="margin-left: 15px; margin-top: 5px; margin-right: 6px">
+                            <small> 
+                                Page {{ paginate.number }} of {{ paginate.paginator.num_pages }}  
+                            </small>
+                        </h6> 
+                       
+                    </div>
+                   
+                  
+                
+                {% if paginate.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ paginate.next_page_number }}"><i class="mdi mdi-chevron-right"></i></a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ paginate.paginator.num_pages }}">last</a>
+                    </li>
+                {% endif %}
+                </ul>
+
+        </nav>
+             

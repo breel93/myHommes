@@ -40,7 +40,7 @@
 
             {% if featured_property %}
             
-                  {% for property in featured_property %}
+                  {% for property in featured_property|slice:":6"  %}
                   
                         {% include 'property/snippet/property_card.html' with instance=property %}
 
@@ -51,21 +51,26 @@
           
        </div>
     </div>
+    <div class="row mt-4">
+            <div class="col-md-12 text-center">
+               <a class="btn btn-success" href="{% url 'property:list' %}">VIEW ALL</a>
+            </div>
+      </div>
  </section>
  <!-- End Properties List -->
  <!-- Properties by City -->
  <section class="section-padding bg-white">
     <div class="section-title text-center mb-5">
-       <h2>Property By City</h2>
+       <h2>Top Cities</h2>
        <p>We bring you the best properties in your favorite city.</p>
     </div>
     <div class="container">
             <div class="row">
-                  {% if city %}
+                  {% if featured_cities %}
             
-                        {% for c in city %}
+                        {% for c in featured_cities %}
                         
-                              {% include 'main/snippet/city_card.html' with instance=c %}
+                              {% include 'main/snippet/featured_city_card.html' with instance=c %}
       
       
                         {% endfor %}
@@ -74,7 +79,30 @@
             </div>
     
     </div>
+   
  </section>
+
+ <section class="section-padding bg-white">
+      <div class="section-title text-center mb-5">
+         <h2>Property By Cities</h2>
+         <!-- <p>List of Properties in your favorite city.</p> -->
+      </div>
+      <div class="container">
+              <div class="row">
+                    {% if cities %}
+              
+                          {% for city in cities %}
+                          
+                                {% include 'main/snippet/city_card.html' with instance=city %}
+        
+        
+                          {% endfor %}
+                    {% endif %}
+              
+              </div>
+      
+      </div>
+   </section>
 
  <!-- End Blog -->
  <!-- Join Team -->

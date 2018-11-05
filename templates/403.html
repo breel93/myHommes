@@ -1,0 +1,27 @@
+{% extends "base.html" %} 
+    {% load staticfiles %} {% block content %}
+    {% block style %}
+        <link href='{% static "css/index.css" %}' rel="stylesheet">
+    {% endblock %}
+
+   
+    <div class="container" >
+        	 
+            <section class="section-padding">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 mx-auto text-center">
+                            <h1><img class="img-fluid" src="{%'static images/404.png'%}" alt="404"></h1>
+            
+                            <h1>Error 403, Permission Denied.</h1>
+                            <p class="land">Forbidden.</p>
+                            <div class="mt-5">
+                                <a href="/" class="btn btn-success btn-lg"><i class="mdi mdi-home"></i> GO TO HOME PAGE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+         
+        </div>
+{% endblock %}

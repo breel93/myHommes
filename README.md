@@ -1,5 +1,4 @@
 # myHommes
-A full featured real-estate web app with django 
 A full featured real estate website. that let user find properties in the preferred cities or neighborhood and also let realtor list their properties
 ##### Versions
 - [Python 3.6](https://www.python.org)

@@ -54,15 +54,5 @@ class SearchPropertyListView(ListView):
         __iexact = fields is exactly this
         '''
 
-        property_list = list(Property.objects.all())
-        shuffle(property_list)
-        paginator = Paginator(property_list, 10)
-        page = self.request.GET.get('page')
-        
-
-        try:
-            property = paginator.page(page)
-        except PageNotAnInteger:
-            property = paginator.page(1)
-        except EmptyPage:
-            property = paginator.page(paginator.num_pages)
+       
+       

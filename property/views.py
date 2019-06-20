@@ -125,9 +125,6 @@ class PropertyCreateView(RealtorAccountMixin, SubmitBtnMixin, CreateView):
                         property_images.save()
                     except Exception as e:
                         break
-            
-            
-            
             return redirect('realtor:home')
         
         

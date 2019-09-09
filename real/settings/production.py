@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     #third party..
     'crispy_forms',
     'storages',
+    'django_filters',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

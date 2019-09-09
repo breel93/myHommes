@@ -282,7 +282,6 @@ def get_city(request, slug, **kwargs):
     paginator = Paginator(city_property_list, 10)
     page = request.GET.get('page')
         
-
     try:
         city_property = paginator.page(page)
     except PageNotAnInteger:
@@ -292,12 +291,9 @@ def get_city(request, slug, **kwargs):
 
 
     
-
-
-    
     neigborhood_name = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
     property_type  = Category.objects.all()
-    city_name = City.objects.filter(slug=slug)[:1]
+    city_name = City.objects.get(slug=slug)
     
    
     featured = list(Property.objects.filter(featured = True,city__slug=slug))
@@ -327,15 +323,15 @@ def get_neighborhood(request, slug, neighborhood_slug):
 
 
     
-    city_neigborhoods = Neighborhood.objects.filter(city__slug=slug).annotate(num_property = Count("property")).order_by("-num_property")
+    city_neigborhoods = Neighborhood.objects.filter(city__slug=slug).exclude(slug=neighborhood_slug).annotate(num_property = Count("property")).order_by("-num_property")
     featured = list(Property.objects.filter(featured = True,city__slug=slug, neighborhood__slug = neighborhood_slug))
     property_type  = Category.objects.filter()
-    neigborhood_name = Neighborhood.objects.filter(city__slug=slug, slug=neighborhood_slug)[:1]
+    neigborhood_name = Neighborhood.objects.get(city__slug=slug, slug=neighborhood_slug)
     # city =  city_name = City.objects.filter(slug=slug)[:1]
 
     shuffle(featured)
 
-    city = City.objects.filter(slug=slug)[:1]
+    city = City.objects.get(slug=slug)
     context = {  
         'neighborhood_property' : neighborhood_property , 
         'city_neigborhoods' : city_neigborhoods,

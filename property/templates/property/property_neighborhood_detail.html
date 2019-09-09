@@ -16,12 +16,12 @@
             
                     <div class="carousel-inner" role="listbox">
                         {% if city %}
-                          {% for city in city %}
+                       
                             <div class="carousel-item active" 
                                 style="background-image: {% if city.image %}url('{{ city.image.url }}') {% else %} url({% static 'images/city_view.jpg' %}){% endif %}">      
                                 <div class="overlay"></div>
                             </div>
-                          {% endfor %}
+                         
                         {% endif %}
                        
                     </div>
@@ -68,9 +68,7 @@
             
                         <div class="card-body">
                             {% if neigborhood_name %}
-                                {% for neigborhood_name in neigborhood_name %}
                                     <h6 class="card-title mb-3">Close to {{ neigborhood_name.title }}</h6>
-                                {% endfor %}
                             {% endif %}
 
             
